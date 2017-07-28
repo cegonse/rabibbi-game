@@ -12,6 +12,7 @@ void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y,
 	ptr->tile_x = x / 8;
 	ptr->tile_y = y / 8;
 	ptr->last_direction = CHARACTER_DIRECTION_DOWN;
+	ptr->current_animation = CHARACTER_ANIMATION_DOWN_IDLE;
 	ptr->moved = FALSE;
 	ptr->animation_frame_wait = 0;
 
@@ -22,7 +23,7 @@ void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y,
 
 	VDP_setPalette(PAL0 + palIndex, pal);
 	ptr->sprite = SPR_addSprite(spr, x, y, TILE_ATTR(PAL0 + palIndex, TRUE, FALSE, FALSE));
-	SPR_setAnim(ptr->sprite, CHARACTER_DIRECTION_DOWN);
+	SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_DOWN_IDLE);
 	SPR_update();
 }
 
@@ -69,22 +70,6 @@ void character_update(character_t *ptr)
 
 	// Handle position
 	SPR_setPosition(ptr->sprite, ptr->position_x, ptr->position_y);
-
-	// Handle animation
-	if (!ptr->moved)
-	{
-		SPR_setFrame(ptr->sprite, 0);
-	}
-	else
-	{
-		++(ptr->animation_frame_wait);
-
-		if (ptr->animation_frame_wait == CHARACTER_ANIM_FRAMES)
-		{
-			SPR_nextFrame(ptr->sprite);
-			ptr->animation_frame_wait = 0;
-		}
-	}
 }
 
 //-------------------------------------------------------------
@@ -133,15 +118,16 @@ u8 character_joyStateToCharacterDirection(u16 joy)
 void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collisionMap, u8 collisionMapWidth,
 	u8 collisionMapHeight, s8 *vScrollDir, s8 *hScrollDir)
 {
+	u16 tileId;
+	u8 vDirection = CHARACTER_DIRECTION_NONE, hDirection = CHARACTER_DIRECTION_NONE;
+
+	*(vScrollDir) = 0;
+	*(hScrollDir) = 0;
+
 	if (targetDirection == CHARACTER_DIRECTION_NONE)
 	{
-		*(vScrollDir) = 0;
-		*(hScrollDir) = 0;
 		ptr->moved = FALSE;
-		return;
 	}
-
-	u16 tileId;
 
 	if (targetDirection & CHARACTER_DIRECTION_UP)
 	{
@@ -164,7 +150,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 					ptr->temp_y = 0;
 					ptr->tile_y--;
 					ptr->moved = TRUE;
-					ptr->last_direction = CHARACTER_ANIMATION_UP;
+					ptr->last_direction = CHARACTER_DIRECTION_UP;
+					vDirection = CHARACTER_DIRECTION_UP;
 					*(vScrollDir) = -1;
 				}
 				else
@@ -177,7 +164,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 				// Move normally
 				ptr->temp_y--;
 				ptr->moved = TRUE;
-				ptr->last_direction = CHARACTER_ANIMATION_UP;
+				ptr->last_direction = CHARACTER_DIRECTION_UP;
+				vDirection = CHARACTER_DIRECTION_UP;
 				*(vScrollDir) = -1;
 			}
 		}
@@ -192,7 +180,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 					ptr->temp_y = 0;
 					ptr->tile_y--;
 					ptr->position_y--;
-					ptr->last_direction = CHARACTER_ANIMATION_UP;
+					ptr->last_direction = CHARACTER_DIRECTION_UP;
+					vDirection = CHARACTER_DIRECTION_UP;
 					ptr->moved = TRUE;
 				}
 			}
@@ -201,7 +190,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 				// Move normally
 				ptr->temp_y--;
 				ptr->position_y--;
-				ptr->last_direction = CHARACTER_ANIMATION_UP;
+				ptr->last_direction = CHARACTER_DIRECTION_UP;
+				vDirection = CHARACTER_DIRECTION_UP;
 				ptr->moved = TRUE;
 			}
 		}
@@ -228,7 +218,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 					ptr->temp_y = 0;
 					ptr->tile_y++;
 					ptr->moved = TRUE;
-					ptr->last_direction = CHARACTER_ANIMATION_DOWN;
+					ptr->last_direction = CHARACTER_DIRECTION_DOWN;
+					vDirection = CHARACTER_DIRECTION_DOWN;
 					*(vScrollDir) = 1;
 				}
 				else
@@ -241,7 +232,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 				// Move normally
 				ptr->temp_y++;
 				ptr->moved = TRUE;
-				ptr->last_direction = CHARACTER_ANIMATION_DOWN;
+				ptr->last_direction = CHARACTER_DIRECTION_DOWN;
+				vDirection = CHARACTER_DIRECTION_DOWN;
 				*(vScrollDir) = 1;
 			}
 		}
@@ -256,7 +248,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 					ptr->temp_y = 0;
 					ptr->tile_y++;
 					ptr->position_y++;
-					ptr->last_direction = CHARACTER_ANIMATION_DOWN;
+					ptr->last_direction = CHARACTER_DIRECTION_DOWN;
+					vDirection = CHARACTER_DIRECTION_DOWN;
 					ptr->moved = TRUE;
 				}
 			}
@@ -265,7 +258,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 				// Move normally
 				ptr->temp_y++;
 				ptr->position_y++;
-				ptr->last_direction = CHARACTER_ANIMATION_DOWN;
+				ptr->last_direction = CHARACTER_DIRECTION_DOWN;
+				vDirection = CHARACTER_DIRECTION_DOWN;
 				ptr->moved = TRUE;
 			}
 		}
@@ -292,7 +286,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 					ptr->temp_x = 0;
 					ptr->tile_x--;
 					ptr->moved = TRUE;
-					ptr->last_direction = CHARACTER_ANIMATION_LEFT;
+					ptr->last_direction = CHARACTER_DIRECTION_LEFT;
+					hDirection = CHARACTER_DIRECTION_LEFT;
 					*(hScrollDir) = 1;
 				}
 				else
@@ -304,7 +299,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 			{
 				// Move normally
 				ptr->temp_x--;
-				ptr->last_direction = CHARACTER_ANIMATION_LEFT;
+				ptr->last_direction = CHARACTER_DIRECTION_LEFT;
+				hDirection = CHARACTER_DIRECTION_LEFT;
 				ptr->moved = TRUE;
 				*(hScrollDir) = 1;
 			}
@@ -320,7 +316,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 					ptr->temp_x = 0;
 					ptr->tile_x--;
 					ptr->position_x--;
-					ptr->last_direction = CHARACTER_ANIMATION_LEFT;
+					ptr->last_direction = CHARACTER_DIRECTION_LEFT;
+					hDirection = CHARACTER_DIRECTION_LEFT;
 					ptr->moved = TRUE;
 				}
 			}
@@ -329,15 +326,10 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 				// Move normally
 				ptr->temp_x--;
 				ptr->position_x--;
-				ptr->last_direction = CHARACTER_ANIMATION_LEFT;
+				ptr->last_direction = CHARACTER_DIRECTION_LEFT;
+				hDirection = CHARACTER_DIRECTION_LEFT;
 				ptr->moved = TRUE;
 			}
-		}
-
-		if (ptr->moved)
-		{
-			ptr->last_direction = CHARACTER_ANIMATION_LEFT;
-			SPR_setAnim(ptr->sprite, ptr->last_direction);
 		}
 	}
 
@@ -362,7 +354,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 					ptr->temp_x = 0;
 					ptr->tile_x++;
 					ptr->moved = TRUE;
-					ptr->last_direction = CHARACTER_ANIMATION_RIGHT;
+					ptr->last_direction = CHARACTER_DIRECTION_RIGHT;
+					hDirection = CHARACTER_DIRECTION_RIGHT;
 					*(hScrollDir) = -1;
 				}
 				else
@@ -375,7 +368,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 				// Move normally
 				ptr->temp_x++;
 				ptr->moved = TRUE;
-				ptr->last_direction = CHARACTER_ANIMATION_RIGHT;
+				ptr->last_direction = CHARACTER_DIRECTION_RIGHT;
+				hDirection = CHARACTER_DIRECTION_RIGHT;
 				*(hScrollDir) = -1;
 			}
 		}
@@ -390,7 +384,8 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 					ptr->temp_x = 0;
 					ptr->tile_x++;
 					ptr->position_x++;
-					ptr->last_direction = CHARACTER_ANIMATION_RIGHT;
+					ptr->last_direction = CHARACTER_DIRECTION_RIGHT;
+					hDirection = CHARACTER_DIRECTION_RIGHT;
 					ptr->moved = TRUE;
 				}
 			}
@@ -399,16 +394,207 @@ void character_moveTo(character_t *ptr, u8 targetDirection, const u16* collision
 				// Move normally
 				ptr->temp_x++;
 				ptr->position_x++;
-				ptr->last_direction = CHARACTER_ANIMATION_RIGHT;
+				ptr->last_direction = CHARACTER_DIRECTION_RIGHT;
+				hDirection = CHARACTER_DIRECTION_RIGHT;
 				ptr->moved = TRUE;
 			}
 		}
 	}
 
+	if (vDirection != CHARACTER_DIRECTION_NONE ||
+		hDirection != CHARACTER_DIRECTION_NONE)
+	{
+		ptr->vDirection = vDirection;
+		ptr->hDirection = hDirection;
+	}
+
+
 	// Handle the animation
+	// Walking
 	if (ptr->moved)
 	{
-		SPR_setAnim(ptr->sprite, ptr->last_direction);
+		// Up
+		if (ptr->vDirection == CHARACTER_DIRECTION_UP)
+		{
+			// Up-Left
+			if (ptr->hDirection == CHARACTER_DIRECTION_LEFT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_UP_LEFT_WALK)
+				{
+					SPR_setAnimAndFrame(ptr->sprite, CHARACTER_ANIMATION_UP_RIGHT_WALK, 0);
+					SPR_setHFlip(ptr->sprite, TRUE);
+					ptr->current_animation = CHARACTER_ANIMATION_UP_LEFT_WALK;
+				}
+			}
+			// Up-Right
+			else if (ptr->hDirection == CHARACTER_DIRECTION_RIGHT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_UP_RIGHT_WALK)
+				{
+					SPR_setAnimAndFrame(ptr->sprite, CHARACTER_ANIMATION_UP_RIGHT_WALK, 0);
+					SPR_setHFlip(ptr->sprite, FALSE);
+					ptr->current_animation = CHARACTER_ANIMATION_UP_RIGHT_WALK;
+				}
+			}
+			// Up
+			else
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_UP_WALK)
+				{
+					SPR_setAnimAndFrame(ptr->sprite, CHARACTER_ANIMATION_UP_WALK, 0);
+					ptr->current_animation = CHARACTER_ANIMATION_UP_WALK;
+				}
+			}
+		}
+		// Down
+		else if (ptr->vDirection == CHARACTER_DIRECTION_DOWN)
+		{
+			// Down-Left
+			if (ptr->hDirection == CHARACTER_DIRECTION_LEFT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_DOWN_LEFT_WALK)
+				{
+					SPR_setAnimAndFrame(ptr->sprite, CHARACTER_ANIMATION_DOWN_RIGHT_WALK, 0);
+					SPR_setHFlip(ptr->sprite, TRUE);
+					ptr->current_animation = CHARACTER_ANIMATION_DOWN_LEFT_WALK;
+				}
+			}
+			// Down-Right
+			else if (ptr->hDirection == CHARACTER_DIRECTION_RIGHT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_DOWN_RIGHT_WALK)
+				{
+					SPR_setAnimAndFrame(ptr->sprite, CHARACTER_ANIMATION_DOWN_RIGHT_WALK, 0);
+					SPR_setHFlip(ptr->sprite, FALSE);
+					ptr->current_animation = CHARACTER_ANIMATION_DOWN_RIGHT_WALK;
+				}
+			}
+			// Down
+			else
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_DOWN_WALK)
+				{
+					SPR_setAnimAndFrame(ptr->sprite, CHARACTER_ANIMATION_DOWN_WALK, 0);
+					ptr->current_animation = CHARACTER_ANIMATION_DOWN_WALK;
+				}
+			}
+		}
+		else
+		{
+			// Left
+			if (ptr->hDirection == CHARACTER_DIRECTION_LEFT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_LEFT_WALK)
+				{
+					SPR_setAnimAndFrame(ptr->sprite, CHARACTER_ANIMATION_RIGHT_WALK, 0);
+					SPR_setHFlip(ptr->sprite, TRUE);
+					ptr->current_animation = CHARACTER_ANIMATION_LEFT_WALK;
+				}
+			}
+			// Right
+			else if (ptr->hDirection == CHARACTER_DIRECTION_RIGHT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_RIGHT_WALK)
+				{
+					SPR_setAnimAndFrame(ptr->sprite, CHARACTER_ANIMATION_RIGHT_WALK, 0);
+					SPR_setHFlip(ptr->sprite, FALSE);
+					ptr->current_animation = CHARACTER_ANIMATION_RIGHT_WALK;
+				}
+			}
+		}
+	}
+	// Idle
+	else
+	{
+		// Up
+		if (ptr->vDirection == CHARACTER_DIRECTION_UP)
+		{
+			// Up-Left
+			if (ptr->hDirection == CHARACTER_DIRECTION_LEFT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_UP_LEFT_IDLE)
+				{
+					SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_UP_RIGHT_IDLE);
+					SPR_setHFlip(ptr->sprite, TRUE);
+					ptr->current_animation = CHARACTER_ANIMATION_UP_LEFT_IDLE;
+				}
+			}
+			// Up-Right
+			else if (ptr->hDirection == CHARACTER_DIRECTION_RIGHT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_UP_RIGHT_IDLE)
+				{
+					SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_UP_RIGHT_IDLE);
+					SPR_setHFlip(ptr->sprite, FALSE);
+					ptr->current_animation = CHARACTER_ANIMATION_UP_RIGHT_IDLE;
+				}
+			}
+			// Up
+			else
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_UP_IDLE)
+				{
+					SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_UP_IDLE);
+					ptr->current_animation = CHARACTER_ANIMATION_UP_IDLE;
+				}
+			}
+		}
+		// Down
+		else if (ptr->vDirection == CHARACTER_DIRECTION_DOWN)
+		{
+			// Down-Left
+			if (ptr->hDirection == CHARACTER_DIRECTION_LEFT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_DOWN_LEFT_IDLE)
+				{
+					SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_DOWN_RIGHT_IDLE);
+					SPR_setHFlip(ptr->sprite, TRUE);
+					ptr->current_animation = CHARACTER_ANIMATION_DOWN_LEFT_IDLE;
+				}
+			}
+			// Down-Right
+			else if (ptr->hDirection == CHARACTER_DIRECTION_RIGHT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_DOWN_RIGHT_IDLE)
+				{
+					SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_DOWN_RIGHT_IDLE);
+					SPR_setHFlip(ptr->sprite, FALSE);
+					ptr->current_animation = CHARACTER_ANIMATION_DOWN_RIGHT_IDLE;
+				}
+			}
+			// Down
+			else
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_DOWN_IDLE)
+				{
+					SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_DOWN_IDLE);
+					ptr->current_animation = CHARACTER_ANIMATION_DOWN_IDLE;
+				}
+			}
+		}
+		else
+		{
+			// Left
+			if (ptr->hDirection == CHARACTER_DIRECTION_LEFT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_LEFT_IDLE)
+				{
+					SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_RIGHT_IDLE);
+					SPR_setHFlip(ptr->sprite, TRUE);
+					ptr->current_animation = CHARACTER_ANIMATION_LEFT_IDLE;
+				}
+			}
+			// Right
+			else if (ptr->hDirection == CHARACTER_DIRECTION_RIGHT)
+			{
+				if (ptr->current_animation != CHARACTER_ANIMATION_RIGHT_IDLE)
+				{
+					SPR_setAnim(ptr->sprite, CHARACTER_ANIMATION_RIGHT_IDLE);
+					SPR_setHFlip(ptr->sprite, FALSE);
+					ptr->current_animation = CHARACTER_ANIMATION_RIGHT_IDLE;
+				}
+			}
+		}
 	}
 }
 

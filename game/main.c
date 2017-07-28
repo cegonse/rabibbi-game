@@ -3,10 +3,14 @@
 #include "testmap.h"
 #include "character.h"
 #include "init.h"
+#include "tween.h"
+
+static character_t playerChara;
 
 int main()
 {
 	system_init();
+	tween_init();
 
 	// Load the map tileset and palette to the GPU
 	VDP_loadTileSet(&basic_tiles_def, TILE_USERINDEX, TRUE);
@@ -30,24 +34,23 @@ int main()
 	}
 
 	// Instantiate the player character
-	character_t playerChara;
 	character_init(&playerChara, &character_def, 50, 50, character_def.palette->data, 1);
 
 	s8 vScrollDir = 0, hScrollDir = 0;
 	s16 vScroll = 0, hScroll = 0;
+
+	fix16 test = FIX16(0.0);
+	fix16 from = FIX16(30.0);
+	fix16 to = FIX16(100.0);
+	u16 frames = 120;
+	s8 tw_id = 1;
+	char test_str[64];
 
 	while (1)
 	{
 		character_moveTo(&playerChara, character_joyStateToCharacterDirection(JOY_1),
 			testmap_Collision, testmap_Collision_WIDTH, testmap_Collision_HEIGHT, &
 			vScrollDir, &hScrollDir);
-
-		if (JOY_readJoypad(JOY_1) & BUTTON_A)
-		{
-			character_startBlinking(&playerChara, 10);
-		}
-
-		character_update(&playerChara);
 
 		// Handle scrolling
 		if (hScrollDir != 0)
@@ -61,6 +64,9 @@ int main()
 			vScroll += vScrollDir;
 			VDP_setVerticalScroll(PLAN_A, vScroll);
 		}
+
+		character_update(&playerChara);
+		tween_update();
 
 		// Draw and wait for VBlank
 		SPR_update();

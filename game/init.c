@@ -1,5 +1,8 @@
 #include "init.h"
 
+
+//-------------------------------------------------------------
+
 void system_init()
 {
 	SYSTEM_GPU_SAFE
@@ -11,3 +14,4 @@ void system_init()
 		VDP_setTextPlan(PLAN_B);
 	)
 }
+
