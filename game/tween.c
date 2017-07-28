@@ -87,11 +87,11 @@ void tween_update()
 			}
 
 			// (A * v) + (B * (1 - v))
-			*(curr->value) = fix16Mul(curr->from, v) + fix16Mul(curr->to, one - v);
+			*(curr->value) = fix16Mul(curr->to, v) + fix16Mul(curr->from, one - v);
 
 			// If the tween has reached the final value, remove and call
 			// the finish callback
-			if (*(curr->value) > curr->to)
+			if (*(curr->value) >= curr->to)
 			{
 				u8 id = curr->id;
 				tween_state.count--;

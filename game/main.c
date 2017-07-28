@@ -39,18 +39,27 @@ int main()
 	s8 vScrollDir = 0, hScrollDir = 0;
 	s16 vScroll = 0, hScroll = 0;
 
-	fix16 test = FIX16(0.0);
 	fix16 from = FIX16(30.0);
 	fix16 to = FIX16(100.0);
+	fix16 test = from;
 	u16 frames = 120;
 	s8 tw_id = 1;
 	char test_str[64];
 
+	void test_tw_cb(s8 id) { test = to; do_tween(TWEEN_LINEAR, &test, frames, tw_id, to, from, &test_tw_cb); }
+	do_tween(TWEEN_LINEAR, &test, frames, tw_id, from, to, &test_tw_cb);
+
 	while (1)
 	{
+		playerChara.position_x = fix16ToInt(test);
+		playerChara.position_y = fix16ToInt(test);
+
 		character_moveTo(&playerChara, character_joyStateToCharacterDirection(JOY_1),
 			testmap_Collision, testmap_Collision_WIDTH, testmap_Collision_HEIGHT, &
 			vScrollDir, &hScrollDir);
+
+		sprintf(test_str, "%d,%d", fix16ToInt(test), fix16Frac(test));
+		VDP_drawText(test_str,0,0);
 
 		// Handle scrolling
 		if (hScrollDir != 0)
