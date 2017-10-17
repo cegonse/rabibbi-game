@@ -1,5 +1,5 @@
 # md-crawler
-Dungeon crawler for the Mega Drive
+Dungeon crawler for the Mega Drive.
 
 ## Building
 
