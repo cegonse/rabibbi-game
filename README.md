@@ -10,4 +10,4 @@ cd game/
 make
 ```
 
-The generated ROM is in out/out.bin. CHAN
+The generated ROM is in out/out.bin. CHANaaa
