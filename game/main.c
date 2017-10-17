@@ -44,8 +44,6 @@ int main()
 			testmap_Collision, testmap_Collision_WIDTH, testmap_Collision_HEIGHT, &
 			vScrollDir, &hScrollDir);
 
-		VDP_drawText(test_str,0,0);
-
 		// Handle scrolling
 		if (hScrollDir != 0)
 		{
