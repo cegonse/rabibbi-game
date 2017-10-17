@@ -44,7 +44,6 @@ int main()
 			testmap_Collision, testmap_Collision_WIDTH, testmap_Collision_HEIGHT, &
 			vScrollDir, &hScrollDir);
 
-		sprintf(test_str, "%d,%d", fix16ToInt(test), fix16Frac(test));
 		VDP_drawText(test_str,0,0);
 
 		// Handle scrolling
