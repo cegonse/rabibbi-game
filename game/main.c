@@ -33,7 +33,7 @@ int main()
 	}
 
 	// Instantiate the player character
-	character_init(&playerChara, &character_def, 40, 50, character_def.palette->data, 1);
+	character_init(&playerChara, &character_def, 50, 50, character_def.palette->data, 1);
 
 	s8 vScrollDir = 0, hScrollDir = 0;
 	s16 vScroll = 0, hScroll = 0;
