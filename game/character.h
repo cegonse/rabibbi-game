@@ -22,16 +22,19 @@ typedef struct character
 
 	fix16 vel_x;
 	fix16 vel_y;
+	fix16 max_speed;
+	fix16 friction;
 	s8 accel_x;
 	s8 accel_y;
 
+	u8 animation;
 	Sprite *sprite;
 } character_t;
 
-void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, const u16 *pal, u8 palIndex);
+void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, const u16 *pal, u8 palIndex, fix16 maxSpeed, fix16 friction);
 
 void character_update(character_t *ptr);
 
-void character_joyToAxis(u16 joy, s8 *vx, s8 *vy);
+void character_joyToAxis(u16 joy, s8 *vx, s8 *vy, s8 scale);
 
 #endif // _CHARACTER_H_
