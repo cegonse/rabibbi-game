@@ -37,16 +37,17 @@ int main()
 
 	// Controller state
 	u16 firstPadState = 0;
-	//u16 secondPadState = 0;
+	u16 secondPadState = 0;
 
 	while (1)
 	{
 		// Read joypad
 		firstPadState = JOY_readJoypad(JOY_1);
-		//secondPadState = JOY_readJoypad(JOY_2);
+		secondPadState = JOY_readJoypad(JOY_2);
 
-		//character_joyToAxis(firstPadState, &(playerChara.accel_x), &(playerChara.accel_y));
-		character_joyToAxis(firstPadState, 10, 10);
+		character_joyToAxis(firstPadState, &(playerChara.accel_x), &(playerChara.accel_y));
+		// test
+		playerChara.accel_x = 10;
 		character_update(&playerChara);
 
 		// Draw and wait for VBlank
@@ -54,5 +55,5 @@ int main()
 		VDP_waitVSync();
 	}
 
-	return 0;
+	return (0);
 }
