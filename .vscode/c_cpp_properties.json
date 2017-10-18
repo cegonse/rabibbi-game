@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "MDSDK",
+            "includePath": [
+                "/home/cesar/Documentos/Personal/Gendev/SGDK-master/inc"
+            ],
+            "intelliSenseMode": "clang-x64"
+        }
+    ],
+    "version": 3
+}

@@ -14,7 +14,7 @@ int main()
 	// Load the map tileset and palette to the GPU
 	VDP_loadTileSet(&basic_tiles_def, TILE_USERINDEX, TRUE);
 	VDP_setPalette(2, tiles_pal_def.data);
-
+	
 	// Draw the the test map
 	u16 currentTile = 0;
 	for (u8 x = 0; x < testmap_PlaneA_WIDTH; ++x)
@@ -40,23 +40,7 @@ int main()
 
 	while (1)
 	{
-		character_moveTo(&playerChara, character_joyStateToCharacterDirection(JOY_1),
-			testmap_Collision, testmap_Collision_WIDTH, testmap_Collision_HEIGHT, &
-			vScrollDir, &hScrollDir);
-
-		// Handle scrolling
-		if (hScrollDir != 0)
-		{
-			hScroll += hScrollDir;
-			VDP_setHorizontalScroll(PLAN_A, hScroll);
-		}
-
-		if (vScrollDir != 0)
-		{
-			vScroll += vScrollDir;
-			VDP_setVerticalScroll(PLAN_A, vScroll);
-		}
-
+		character_joyToSpeed(JOY_1, &(playerChara.vel_x), &(playerChara.vel_y));
 		character_update(&playerChara);
 
 		// Draw and wait for VBlank
