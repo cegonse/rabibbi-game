@@ -36,15 +36,16 @@ int main()
 	character_init(&playerChara, &character_def, 40, 50, character_def.palette->data, 1);
 
 	// Controller state
-	u16 firstPadState = 0, secondPadState = 0;
+	u16 firstPadState = 0;
+	//u16 secondPadState = 0;
 
 	while (1)
 	{
 		// Read joypad
 		firstPadState = JOY_readJoypad(JOY_1);
-		secondPadState = JOY_readJoypad(JOY_2);
+		//secondPadState = JOY_readJoypad(JOY_2);
 
-		character_joyToSpeed(JOY_1, &(playerChara.accel_x), &(playerChara.accel_y));
+		character_joyToAxis(firstPadState, &(playerChara.accel_x), &(playerChara.accel_y));
 		character_update(&playerChara);
 
 		// Draw and wait for VBlank

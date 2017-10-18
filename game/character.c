@@ -23,8 +23,8 @@ void character_update(character_t *ptr)
 	// Handle acceleration
 	fix16 ax = fix16Mul(intToFix16(ptr->accel_x), *DELTA_TIME);
 	fix16 ay = fix16Mul(intToFix16(ptr->accel_y), *DELTA_TIME);
-	fix16Add(ptr->vel_x, ax);
-	fix16Add(ptr->vel_y, ay);
+	ptr->vel_x += ax;
+	ptr->vel_y += ay;
 
 	// Handle speed
 	ptr->position_x += fix16ToInt(ptr->vel_x);
