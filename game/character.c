@@ -1,7 +1,7 @@
 #include "character.h"
 
 
-extern fix16* DELTA_TIME;
+extern fix16 *dt;
 
 //-------------------------------------------------------------
 
@@ -21,8 +21,8 @@ void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y,
 void character_update(character_t *ptr)
 {
 	// Handle acceleration
-	fix16 ax = fix16Mul(intToFix16(ptr->accel_x), *DELTA_TIME);
-	fix16 ay = fix16Mul(intToFix16(ptr->accel_y), *DELTA_TIME);
+	fix16 ax = fix16Mul(intToFix16(ptr->accel_x), *dt);
+	fix16 ay = fix16Mul(intToFix16(ptr->accel_y), *dt);
 	ptr->vel_x += ax;
 	ptr->vel_y += ay;
 

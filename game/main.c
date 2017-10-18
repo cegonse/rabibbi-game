@@ -45,12 +45,14 @@ int main()
 		firstPadState = JOY_readJoypad(JOY_1);
 		//secondPadState = JOY_readJoypad(JOY_2);
 
-		character_joyToAxis(firstPadState, &(playerChara.accel_x), &(playerChara.accel_y));
+		//character_joyToAxis(firstPadState, &(playerChara.accel_x), &(playerChara.accel_y));
+		character_joyToAxis(firstPadState, 10, 10);
 		character_update(&playerChara);
 
 		// Draw and wait for VBlank
 		SPR_update();
 		VDP_waitVSync();
 	}
-	return (0);
+
+	return 0;
 }

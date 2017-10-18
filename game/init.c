@@ -2,7 +2,8 @@
 
 static const fix16 NTSC_DELTA_TIME = FIX16(0.17);
 static const fix16 PAL_DELTA_TIME = FIX16(0.02);
-fix16 DELTA_TIME;
+static fix16 DELTA_TIME;
+fix16 *dt;
 
 //-------------------------------------------------------------
 
@@ -25,6 +26,8 @@ void system_init()
 		{
 			DELTA_TIME = NTSC_DELTA_TIME;
 		}
+
+		dt = &DELTA_TIME;
 	)
 }
 
