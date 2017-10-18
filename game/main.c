@@ -35,12 +35,16 @@ int main()
 	// Instantiate the player character
 	character_init(&playerChara, &character_def, 40, 50, character_def.palette->data, 1);
 
-	s8 vScrollDir = 0, hScrollDir = 0;
-	s16 vScroll = 0, hScroll = 0;
+	// Controller state
+	u16 firstPadState = 0, secondPadState = 0;
 
 	while (1)
 	{
-		character_joyToSpeed(JOY_1, &(playerChara.vel_x), &(playerChara.vel_y));
+		// Read joypad
+		firstPadState = JOY_readJoypad(JOY_1);
+		secondPadState = JOY_readJoypad(JOY_2);
+
+		character_joyToSpeed(JOY_1, &(playerChara.accel_x), &(playerChara.accel_y));
 		character_update(&playerChara);
 
 		// Draw and wait for VBlank

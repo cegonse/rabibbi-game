@@ -1,6 +1,8 @@
 #include "character.h"
 
 
+extern fix16* DELTA_TIME;
+
 //-------------------------------------------------------------
 
 void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, const u16 *pal, u8 palIndex)
@@ -18,9 +20,15 @@ void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y,
 
 void character_update(character_t *ptr)
 {
+	// Handle acceleration
+	fix16 ax = fix16Mul(intToFix16(ptr->accel_x), *DELTA_TIME);
+	fix16 ay = fix16Mul(intToFix16(ptr->accel_y), *DELTA_TIME);
+	fix16Add(ptr->vel_x, ax);
+	fix16Add(ptr->vel_y, ay);
+
 	// Handle speed
-	ptr->position_x += ptr->vel_x;
-	ptr->position_y += ptr->vel_y;
+	ptr->position_x += fix16ToInt(ptr->vel_x);
+	ptr->position_y += fix16ToInt(ptr->vel_y);
 
 	// Transform position and move sprite
 	SPR_setPosition(ptr->sprite, ptr->position_x, ptr->position_y);
@@ -28,27 +36,31 @@ void character_update(character_t *ptr)
 
 //-------------------------------------------------------------
 
-void character_joyToSpeed(u16 joy, s8 *vx, s8 *vy)
+void character_joyToAxis(u16 state, s8 *vx, s8 *vy)
 {
-	u16 state = JOY_readJoypad(joy);
-
 	if (state & BUTTON_LEFT)
 	{
 		*vx = 1;
 	}
-
-	if (state & BUTTON_RIGHT)
+ 	else if (state & BUTTON_RIGHT)
 	{
 		*vx = -1;
+	}
+	else
+	{
+		*vx = 0;
 	}
 
 	if (state & BUTTON_UP)
 	{
 		*vy = 1;
 	}
-
-	if (state & BUTTON_DOWN)
+	else if (state & BUTTON_DOWN)
 	{
 		*vy = -1;
+	}
+	else
+	{
+		*vy = 0;
 	}
 }
