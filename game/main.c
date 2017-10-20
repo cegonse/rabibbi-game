@@ -4,6 +4,7 @@
 #include "character.h"
 #include "init.h"
 #include "tween.h"
+#include "map.h"
 
 static character_t playerChara;
 
@@ -11,7 +12,7 @@ int main()
 {
 	system_init();
 
-	// Load the map tileset and palette to the GPU
+	/*// Load the map tileset and palette to the GPU
 	VDP_loadTileSet(&basic_tiles_def, TILE_USERINDEX, TRUE);
 	VDP_setPalette(2, tiles_pal_def.data);
 	
@@ -30,7 +31,7 @@ int main()
 				TILE_ATTR_FULL(PAL2,FALSE,FALSE,FALSE,TILE_USERINDEX + currentTile),
 				x, y);
 		}
-	}
+	}*/
 
 	// Instantiate the player character
 	character_init(&playerChara, &character_def, 40, 50, character_def.palette->data, 1, FIX16(1.5), FIX16(4.0));
