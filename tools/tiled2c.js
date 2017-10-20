@@ -89,10 +89,13 @@ outFile += "\t.tilesetData = &" + mapTileset + ",\n";
 outFile += "\t.paletteData = &" + mapPalette + ",\n";
 
 if (planData) {
+	outFile += "\t.planeWidth = " + planData.width + ",\n";
+	outFile += "\t.planeHeight = " + planData.height + ",\n";
 	outFile += "\t.planeData = &" + mapName + "_" + planData.name + ",\n";
 }
 
 if (collisionEdges) {
+	outFile += "\t.collisionEdges = " + collisionEdges.length + ",\n";
 	outFile += "\t.collisionData = &" + mapName + "_collision_data" + "\n";
 }
 

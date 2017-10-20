@@ -3,6 +3,10 @@
 
 typedef struct room
 {
+	s8 planeWidth;
+	s8 planeHeight;
+	s8 collisionEdges;
+
 	u16 *planeData;
 	s16 *collisionData;
 	TileSet *tilesetData;
