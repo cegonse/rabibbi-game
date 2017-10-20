@@ -9,18 +9,18 @@ if (process.argv.length != 3) {
 // File names and data
 var inName = process.argv[2];
 var inMap = JSON.parse(fs.readFileSync(inName));
-var outName = inName.substring(0, inName.indexOf(".json")) + ".h";
 
 // Fetch the map properties
 var mapName = inMap.properties.map_name;
 var mapTileset = inMap.properties.tileset_name;
 var mapPalette = inMap.properties.tileset_palette;
+var outName = mapName + ".h";
 
 // Create the output C header
 var outFile = "// Created with tiled2c.js\n";
 outFile += "#ifndef _" + mapName + "_\n";
 outFile += "#define _" + mapName + "_\n\n";
-outFile += "#include \"room.h\"\n\n";
+outFile += "#include \"../room.h\"\n\n";
 
 // Write the data for the plane A layer
 var planTiles = null;
@@ -70,33 +70,33 @@ for (var i = 0; i < inMap.layers.length; ++i) {
 
 if (collisionEdges) {
 	outFile += "#define " + mapName + "_COLLISION_EDGE_COUNT\t" + collisionEdges.length + "\n\n";
-	outFile += "static const s16 " + mapName + "_collision_data[" + collisionEdges.length + "][4] = {\n";
+	outFile += "static const s16 " + mapName + "_collision_data[" + (collisionEdges.length * 4).toString() + "] = {\n";
 
 	for (var i = 0; i < collisionEdges.length; ++i) {
 		var ed = collisionEdges[i];
 
-		outFile += "\t{ " + Math.floor(ed.x).toString() + ", " + Math.floor(ed.y).toString() + ", " + 
+		outFile += "\t" + Math.floor(ed.x).toString() + ", " + Math.floor(ed.y).toString() + ", " + 
 			(Math.floor(ed.x) + Math.floor(ed.polyline[1].x)).toString() + ", " + 
-			(Math.floor(ed.y) + Math.floor(ed.polyline[1].y)).toString() + " },\n";
+			(Math.floor(ed.y) + Math.floor(ed.polyline[1].y)).toString() + ",\n\n";
 	}
 
 	outFile += "};\n\n";
 }
 
 // Write the room struct
-outFile += "static const room_t " + mapName + " {\n";
+outFile += "static const room_t " + mapName + " = {\n";
 outFile += "\t.tilesetData = &" + mapTileset + ",\n";
 outFile += "\t.paletteData = &" + mapPalette + ",\n";
 
 if (planData) {
 	outFile += "\t.planeWidth = " + planData.width + ",\n";
 	outFile += "\t.planeHeight = " + planData.height + ",\n";
-	outFile += "\t.planeData = &" + mapName + "_" + planData.name + ",\n";
+	outFile += "\t.planeData = " + mapName + "_" + planData.name + ",\n";
 }
 
 if (collisionEdges) {
 	outFile += "\t.collisionEdges = " + collisionEdges.length + ",\n";
-	outFile += "\t.collisionData = &" + mapName + "_collision_data" + "\n";
+	outFile += "\t.collisionData = " + mapName + "_collision_data" + "\n";
 }
 
 outFile += "};\n\n";

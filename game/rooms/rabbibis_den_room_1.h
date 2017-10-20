@@ -2,7 +2,7 @@
 #ifndef _rabbibis_den_room_1_
 #define _rabbibis_den_room_1_
 
-#include "room.h"
+#include "../room.h"
 
 #define rabbibis_den_room_1_PlaneA_HEIGHT	16
 #define rabbibis_den_room_1_PlaneA_WIDTH	16
@@ -28,30 +28,43 @@ static const u16 rabbibis_den_room_1_PlaneA[256] = {
 
 #define rabbibis_den_room_1_COLLISION_EDGE_COUNT	13
 
-static const s16 rabbibis_den_room_1_collision_data[13][4] = {
-	{ 1, 56, 15, 55 },
-	{ 16, 56, 16, 32 },
-	{ 16, 32, 48, 31 },
-	{ 48, 31, 47, -1 },
-	{ 80, 33, 80, 0 },
-	{ 80, 32, 111, 31 },
-	{ 112, 32, 111, 55 },
-	{ 112, 56, 128, 55 },
-	{ 0, 104, 16, 104 },
-	{ 16, 104, 16, 120 },
-	{ 16, 120, 112, 120 },
-	{ 112, 120, 112, 104 },
-	{ 112, 104, 128, 104 },
+static const s16 rabbibis_den_room_1_collision_data[52] = {
+	1, 56, 15, 55,
+
+	16, 56, 16, 32,
+
+	16, 32, 48, 31,
+
+	48, 31, 47, -1,
+
+	80, 33, 80, 0,
+
+	80, 32, 111, 31,
+
+	112, 32, 111, 55,
+
+	112, 56, 128, 55,
+
+	0, 104, 16, 104,
+
+	16, 104, 16, 120,
+
+	16, 120, 112, 120,
+
+	112, 120, 112, 104,
+
+	112, 104, 128, 104,
+
 };
 
-static const room_t rabbibis_den_room_1 {
+static const room_t rabbibis_den_room_1 = {
 	.tilesetData = &rabbibisden_tiles_def,
 	.paletteData = &rabbibisden_tiles_pal_def,
 	.planeWidth = 16,
 	.planeHeight = 16,
-	.planeData = &rabbibis_den_room_1_PlaneA,
+	.planeData = rabbibis_den_room_1_PlaneA,
 	.collisionEdges = 13,
-	.collisionData = &rabbibis_den_room_1_collision_data
+	.collisionData = rabbibis_den_room_1_collision_data
 };
 
 #endif // _rabbibis_den_room_1_

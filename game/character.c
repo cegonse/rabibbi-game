@@ -26,18 +26,19 @@ void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y,
 
 //-------------------------------------------------------------
 
-void character_update(character_t *ptr)
+void character_update(character_t *ptr, room_t *room)
 {
-	__character_move(ptr);
+	__character_move(ptr, room);
 	__character_animate(ptr);
 	__character_transform(ptr);
 }
 
 //-------------------------------------------------------------
 
-inline void __character_move(character_t *ptr)
+inline void __character_move(character_t *ptr, room_t *room)
 {
 	fix16 ax = 0, ay = 0;
+	s16 vx, vy;
 
 	// X axis
 	if (ptr->accel_x != 0)
@@ -106,8 +107,36 @@ inline void __character_move(character_t *ptr)
 	}
 
 	// Handle speed
-	ptr->position_x += fix16ToInt(ptr->vel_x);
-	ptr->position_y += fix16ToInt(ptr->vel_y);
+	vx = fix16ToInt(ptr->vel_x);
+	vy = fix16ToInt(ptr->vel_y);
+
+	if (!__character_collide(ptr, vx, vy, room))
+	{
+		ptr->position_x += vx;
+		ptr->position_y += vy;
+	}
+}
+
+//-------------------------------------------------------------
+
+inline u8 __character_collide(character_t *ptr, s16 dx, s16 dy, room_t *room)
+{
+	u8 collides = 0;
+	s16 x0, y0, xf, yf;
+	s16 ddx = dx + ptr->position_x, ddy = dy + ptr->position_y;
+
+	// Test against all the collision edges in the room
+	for (u8 i = 0; i < room->collisionEdges * 4; i += 4)
+	{
+		x0 = room->collisionData[i];
+		y0 = room->collisionData[i+1];
+		xf = room->collisionData[i+2];
+		yf = room->collisionData[i+3];
+
+		if (collides) break;
+	}
+	
+	return collides;
 }
 
 //-------------------------------------------------------------
@@ -222,7 +251,7 @@ void character_joyToAxis(u16 state, fix16 *vx, fix16 *vy, s8 scale)
 		}
 		else
 		{
-			*vx = -FIX16(1.0);
+			*vx = FIX16(-1.0);
 		}
 	}
  	else if (state & BUTTON_RIGHT)
@@ -244,7 +273,7 @@ void character_joyToAxis(u16 state, fix16 *vx, fix16 *vy, s8 scale)
 	}
 	else if (state & BUTTON_UP)
 	{
-		*vy = -FIX16(1.0);
+		*vy = FIX16(-1.0);
 	}
 	else if (state & BUTTON_DOWN)
 	{

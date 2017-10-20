@@ -2,6 +2,7 @@
 #define _CHARACTER_H_
 
 #include "genesis.h"
+#include "room.h"
 
 #define CHARACTER_ANIMATION_DOWN_IDLE		0
 #define CHARACTER_ANIMATION_DOWN_WALK		1
@@ -36,14 +37,15 @@ typedef struct character
 
 void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, const u16 *pal, u8 palIndex, fix16 maxSpeed, fix16 friction);
 
-void character_update(character_t *ptr);
+void character_update(character_t *ptr, room_t *room);
 
 void character_joyToAxis(u16 joy, fix16 *vx, fix16 *vy, s8 scale);
 
 // Private members
 
 void __character_animate(character_t *ptr);
-void __character_move(character_t *ptr);
+void __character_move(character_t *ptr, room_t *room);
 void __character_transform(character_t *ptr);
+u8 __character_collide(character_t *ptr, s16 dx, s16 dy, room_t *room);
 
 #endif // _CHARACTER_H_
