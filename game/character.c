@@ -110,9 +110,13 @@ inline void __character_move(character_t *ptr, room_t *room)
 	vx = fix16ToInt(ptr->vel_x);
 	vy = fix16ToInt(ptr->vel_y);
 
-	if (!__character_collide(ptr, vx, vy, room))
+    if (!__character_collide(ptr, vx, 0, room))
 	{
 		ptr->position_x += vx;
+	}
+
+	if (!__character_collide(ptr, 0, vy, room))
+	{
 		ptr->position_y += vy;
 	}
 }
@@ -121,11 +125,11 @@ inline void __character_move(character_t *ptr, room_t *room)
 
 inline u8 __character_collide(character_t *ptr, s16 dx, s16 dy, room_t *room)
 {
-	u8 collides = 0;
 	s16 x, y, w, h;
+	u8 collide = 0;
 
-	const s16 chr_x = ptr->position_x;
-	const s16 chr_y = ptr->position_y;
+	const s16 chr_x = ptr->position_x + dx;
+	const s16 chr_y = ptr->position_y + dy;
 	const s16 chr_w = CHARACTER_SPRITE_WIDTH;
 	const s16 chr_h = CHARACTER_SPRITE_HEIGHT;
 
@@ -137,15 +141,11 @@ inline u8 __character_collide(character_t *ptr, s16 dx, s16 dy, room_t *room)
 		w = room->collisionData[i+2];
 		h = room->collisionData[i+3];
 
-		collides = (chr_x < x + w &&
-        			chr_x + chr_w > x &&
-					chr_y < y + h &&
-					chr_h + chr_y > y);
-
-		if (collides) break;
+		collide = (chr_x < x + w && chr_x + chr_w > x && chr_y < y + h && chr_h + chr_y > y);
+		if (collide) return collide;
 	}
-	
-	return collides;
+
+	return collide;
 }
 
 //-------------------------------------------------------------
