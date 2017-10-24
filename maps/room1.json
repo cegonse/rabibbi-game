@@ -17,315 +17,147 @@
          "name":"Collision",
          "objects":[
                 {
-                 "height":0,
-                 "id":1,
-                 "name":"0",
-                 "polyline":[
-                        {
-                         "x":-1.25,
-                         "y":-0.25
-                        }, 
-                        {
-                         "x":14.75,
-                         "y":-0.25
-                        }],
+                 "height":8,
+                 "id":21,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":1.25,
-                 "y":56.25
+                 "width":40,
+                 "x":8,
+                 "y":24
                 }, 
                 {
-                 "height":0,
-                 "id":2,
-                 "name":"1",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":0,
-                         "y":-24
-                        }],
+                 "height":24,
+                 "id":22,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":16,
-                 "y":56
+                 "width":8,
+                 "x":40,
+                 "y":0
                 }, 
                 {
-                 "height":0,
-                 "id":3,
-                 "name":"2",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":-0.25
-                        }, 
-                        {
-                         "x":32,
-                         "y":-0.25
-                        }],
+                 "height":8,
+                 "id":23,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":16,
-                 "y":32.25
+                 "width":16,
+                 "x":0,
+                 "y":48
                 }, 
                 {
-                 "height":0,
-                 "id":4,
-                 "name":"3",
-                 "polyline":[
-                        {
-                         "x":-0.75,
-                         "y":0.25
-                        }, 
-                        {
-                         "x":-0.75,
-                         "y":-31.75
-                        }],
+                 "height":16,
+                 "id":24,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":48.75,
-                 "y":31.75
+                 "width":8,
+                 "x":8,
+                 "y":32
                 }, 
                 {
-                 "height":0,
-                 "id":5,
-                 "name":"4",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":-1
-                        }, 
-                        {
-                         "x":0,
-                         "y":-33
-                        }],
+                 "height":24,
+                 "id":25,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
+                 "width":8,
                  "x":80,
-                 "y":33
+                 "y":0
                 }, 
                 {
-                 "height":0,
-                 "id":6,
-                 "name":"5",
-                 "polyline":[
-                        {
-                         "x":-0.75,
-                         "y":-0.75
-                        }, 
-                        {
-                         "x":31.25,
-                         "y":-0.75
-                        }],
+                 "height":8,
+                 "id":26,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":80.75,
-                 "y":32.75
+                 "width":40,
+                 "x":80,
+                 "y":24
                 }, 
                 {
-                 "height":0,
-                 "id":7,
-                 "name":"6",
-                 "polyline":[
-                        {
-                         "x":-0.5,
-                         "y":-0.75
-                        }, 
-                        {
-                         "x":-0.5,
-                         "y":23.25
-                        }],
+                 "height":8,
+                 "id":27,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":112.5,
-                 "y":32.75
-                }, 
-                {
-                 "height":0,
-                 "id":8,
-                 "name":"7",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":-0.25
-                        }, 
-                        {
-                         "x":16,
-                         "y":-0.25
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
+                 "width":16,
                  "x":112,
-                 "y":56.25
+                 "y":48
                 }, 
                 {
-                 "height":0,
-                 "id":9,
-                 "name":"8",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":16,
-                         "y":0
-                        }],
+                 "height":16,
+                 "id":28,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
+                 "width":8,
+                 "x":112,
+                 "y":32
+                }, 
+                {
+                 "height":8,
+                 "id":29,
+                 "name":"",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":16,
                  "x":0,
                  "y":104
                 }, 
                 {
-                 "height":0,
-                 "id":10,
-                 "name":"9",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":0,
-                         "y":16
-                        }],
+                 "height":16,
+                 "id":31,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":16,
-                 "y":104
+                 "width":8,
+                 "x":8,
+                 "y":112
                 }, 
                 {
-                 "height":0,
-                 "id":11,
-                 "name":"11",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":96,
-                         "y":0
-                        }],
+                 "height":8,
+                 "id":32,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
+                 "width":96,
                  "x":16,
                  "y":120
                 }, 
                 {
-                 "height":0,
-                 "id":12,
-                 "name":"12",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":0,
-                         "y":-16
-                        }],
+                 "height":8,
+                 "id":33,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
+                 "width":16,
                  "x":112,
-                 "y":120
-                }, 
-                {
-                 "height":0,
-                 "id":13,
-                 "name":"13",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":16,
-                         "y":0
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":112,
-                 "y":104
-                }],
-         "opacity":1,
-         "type":"objectgroup",
-         "visible":true,
-         "x":0,
-         "y":0
-        }, 
-        {
-         "color":"#7f00ff",
-         "draworder":"topdown",
-         "name":"Warp",
-         "objects":[
-                {
-                 "height":0,
-                 "id":14,
-                 "name":"0",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":0,
-                         "y":-48
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":0,
                  "y":104
                 }, 
                 {
-                 "height":0,
-                 "id":15,
-                 "name":"1",
-                 "polyline":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":-0.25,
-                         "y":-47
-                        }],
+                 "height":16,
+                 "id":34,
+                 "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":128.25,
-                 "y":103
+                 "width":8,
+                 "x":112,
+                 "y":112
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -333,7 +165,7 @@
          "x":0,
          "y":0
         }],
- "nextobjectid":16,
+ "nextobjectid":35,
  "orientation":"orthogonal",
  "properties":
     {

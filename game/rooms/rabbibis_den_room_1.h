@@ -29,32 +29,19 @@ static const u16 rabbibis_den_room_1_PlaneA[256] = {
 #define rabbibis_den_room_1_COLLISION_EDGE_COUNT	13
 
 static const s16 rabbibis_den_room_1_collision_data[52] = {
-	1, 56, 15, 55,
-
-	16, 56, 16, 32,
-
-	16, 32, 48, 31,
-
-	48, 31, 47, -1,
-
-	80, 33, 80, 0,
-
-	80, 32, 111, 31,
-
-	112, 32, 111, 55,
-
-	112, 56, 128, 55,
-
-	0, 104, 16, 104,
-
-	16, 104, 16, 120,
-
-	16, 120, 112, 120,
-
-	112, 120, 112, 104,
-
-	112, 104, 128, 104,
-
+	8, 24, 40, 8,
+	40, 0, 8, 24,
+	0, 48, 16, 8,
+	8, 32, 8, 16,
+	80, 0, 8, 24,
+	80, 24, 40, 8,
+	112, 48, 16, 8,
+	112, 32, 8, 16,
+	0, 104, 16, 8,
+	8, 112, 8, 16,
+	16, 120, 96, 8,
+	112, 104, 16, 8,
+	112, 112, 8, 16,
 };
 
 static const room_t rabbibis_den_room_1 = {
@@ -63,7 +50,7 @@ static const room_t rabbibis_den_room_1 = {
 	.planeWidth = 16,
 	.planeHeight = 16,
 	.planeData = rabbibis_den_room_1_PlaneA,
-	.collisionEdges = 13,
+	.collisionBoxes = 13,
 	.collisionData = rabbibis_den_room_1_collision_data
 };
 

@@ -7,7 +7,7 @@ typedef struct room
 {
 	const s8 planeWidth;
 	const s8 planeHeight;
-	const s8 collisionEdges;
+	const s8 collisionBoxes;
 
 	const u16 *planeData;
 	const s16 *collisionData;

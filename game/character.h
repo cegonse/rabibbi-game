@@ -18,6 +18,9 @@
 
 #define CHARACTER_ANIMATION_WALK_FRAMES		8
 
+#define CHARACTER_SPRITE_WIDTH			24
+#define CHARACTER_SPRITE_HEIGHT			24
+
 typedef struct character
 {
 	s16 position_x;

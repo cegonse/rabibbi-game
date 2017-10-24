@@ -76,8 +76,7 @@ if (collisionEdges) {
 		var ed = collisionEdges[i];
 
 		outFile += "\t" + Math.floor(ed.x).toString() + ", " + Math.floor(ed.y).toString() + ", " + 
-			(Math.floor(ed.x) + Math.floor(ed.polyline[1].x)).toString() + ", " + 
-			(Math.floor(ed.y) + Math.floor(ed.polyline[1].y)).toString() + ",\n\n";
+						  Math.floor(ed.width).toString() + ", " + Math.floor(ed.height).toString() + ",\n";
 	}
 
 	outFile += "};\n\n";
@@ -95,7 +94,7 @@ if (planData) {
 }
 
 if (collisionEdges) {
-	outFile += "\t.collisionEdges = " + collisionEdges.length + ",\n";
+	outFile += "\t.collisionBoxes = " + collisionEdges.length + ",\n";
 	outFile += "\t.collisionData = " + mapName + "_collision_data" + "\n";
 }
 

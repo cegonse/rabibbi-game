@@ -122,16 +122,25 @@ inline void __character_move(character_t *ptr, room_t *room)
 inline u8 __character_collide(character_t *ptr, s16 dx, s16 dy, room_t *room)
 {
 	u8 collides = 0;
-	s16 x0, y0, xf, yf;
-	s16 ddx = dx + ptr->position_x, ddy = dy + ptr->position_y;
+	s16 x, y, w, h;
+
+	const s16 chr_x = ptr->position_x;
+	const s16 chr_y = ptr->position_y;
+	const s16 chr_w = CHARACTER_SPRITE_WIDTH;
+	const s16 chr_h = CHARACTER_SPRITE_HEIGHT;
 
 	// Test against all the collision edges in the room
-	for (u8 i = 0; i < room->collisionEdges * 4; i += 4)
+	for (u8 i = 0; i < room->collisionBoxes * 4; i += 4)
 	{
-		x0 = room->collisionData[i];
-		y0 = room->collisionData[i+1];
-		xf = room->collisionData[i+2];
-		yf = room->collisionData[i+3];
+		x = room->collisionData[i];
+		y = room->collisionData[i+1];
+		w = room->collisionData[i+2];
+		h = room->collisionData[i+3];
+
+		collides = (chr_x < x + w &&
+        			chr_x + chr_w > x &&
+					chr_y < y + h &&
+					chr_h + chr_y > y);
 
 		if (collides) break;
 	}
