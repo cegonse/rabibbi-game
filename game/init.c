@@ -12,7 +12,7 @@ void system_init()
 	SYSTEM_GPU_SAFE
 	(
 		// Init the sprite engine
-		SPR_init(16,256,256);
+		SPR_init(0,0,0);
 
 		// For debugging purposes
 		VDP_setTextPlan(PLAN_B);
@@ -31,3 +31,11 @@ void system_init()
 	)
 }
 
+//-------------------------------------------------------------
+
+void system_endFrame()
+{
+	// Draw and wait for VBlank
+	SPR_update();
+	VDP_waitVSync();
+}

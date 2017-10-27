@@ -1,7 +1,7 @@
 #ifndef _CHARACTER_H_
 #define _CHARACTER_H_
 
-#include "genesis.h"
+#include <genesis.h>
 #include "room.h"
 
 #define CHARACTER_ANIMATION_DOWN_IDLE		0

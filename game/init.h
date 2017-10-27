@@ -11,5 +11,6 @@
 							} while(0);
 
 void system_init();
+void system_endFrame();
 
 #endif // _INIT_H_
