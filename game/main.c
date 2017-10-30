@@ -6,9 +6,7 @@
 #include "game_state.h"
 #include "gui_controller.h"
 
-#include "rooms/rabbibis_den_room_1.h"
-
-static u8 two_players = FALSE;
+static u8 twoPlayers = FALSE;
 static u8 game_state = GAME_STATE_INIT;
 static character_t playerOneCharacter;
 static character_t playerTwoCharacter;
@@ -34,16 +32,37 @@ int main()
 
 	while (1)
 	{
-		// Read joypad
+		// Update player one
 		firstPadState = JOY_readJoypad(JOY_1);
-		secondPadState = JOY_readJoypad(JOY_2);
-
 		character_joyToAxis(firstPadState, &(playerOneCharacter.accel_x), &(playerOneCharacter.accel_y), 1);
 		character_update(&playerOneCharacter, currentRoom);
+
+		// Update player two
+		if (twoPlayers)
+		{
+			secondPadState = JOY_readJoypad(JOY_2);
+		}
 
 		system_endFrame();
 	}
 
 	return (0);
+}
+
+//-------------------------------------------------------------
+
+void game_change_room_event(room_t *room, s16 spawn_x, s16 spawn_y)
+{
+	currentRoom = room;
+	room_load(currentRoom);
+	
+	// Move players to spawn
+	playerOneCharacter.position_x = spawn_x;
+	playerOneCharacter.position_y = spawn_y;
+	__character_transform(&playerOneCharacter);
+
+	if (twoPlayers)
+	{
+	}
 }
 

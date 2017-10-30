@@ -110,6 +110,10 @@ inline void __character_move(character_t *ptr, room_t *room)
 	vx = fix16ToInt(ptr->vel_x);
 	vy = fix16ToInt(ptr->vel_y);
 
+	// Handle warp triggers
+	__character_check_warp(ptr, vx, vy, room);
+
+	// Handle collisions
     if (!__character_collide(ptr, vx, 0, room))
 	{
 		ptr->position_x += vx;
@@ -146,6 +150,37 @@ inline u8 __character_collide(character_t *ptr, s16 dx, s16 dy, room_t *room)
 	}
 
 	return collide;
+}
+
+//-------------------------------------------------------------
+
+inline void __character_check_warp(character_t *ptr, s16 dx, s16 dy, room_t *room)
+{
+	s16 x, y, w, h;
+	u8 collide = 0;
+
+	const s16 chr_x = ptr->position_x + dx;
+	const s16 chr_y = ptr->position_y + dy;
+	const s16 chr_w = CHARACTER_SPRITE_WIDTH;
+	const s16 chr_h = CHARACTER_SPRITE_HEIGHT;
+
+	// Test against all the collision edges in the room
+	for (u8 i = 0; i < room->warpBoxes * 4; i += 4)
+	{
+		x = room->warpData[i];
+		y = room->warpData[i+1];
+		w = room->warpData[i+2];
+		h = room->warpData[i+3];
+
+		collide = (chr_x < x + w && chr_x + chr_w > x && chr_y < y + h && chr_h + chr_y > y);
+
+		if (collide)
+		{
+			room_t *targetRoom = ROOM_LIST[room->warpTargetRooms[i]];
+			game_change_room_event(targetRoom, room->warpTargetRoomsSpawn_x[i], room->warpTargetRoomsSpawn_y[i]);
+			return;
+		}
+	}
 }
 
 //-------------------------------------------------------------

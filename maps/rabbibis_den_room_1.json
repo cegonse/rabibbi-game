@@ -164,18 +164,102 @@
          "visible":true,
          "x":0,
          "y":0
+        }, 
+        {
+         "color":"#640064",
+         "draworder":"topdown",
+         "name":"Warp",
+         "objects":[
+                {
+                 "height":48,
+                 "id":35,
+                 "name":"",
+                 "properties":
+                    {
+                     "target_room":1,
+                     "target_room_spawn_x":340,
+                     "target_room_spawn_y":142
+                    },
+                 "propertytypes":
+                    {
+                     "target_room":"int",
+                     "target_room_spawn_x":"int",
+                     "target_room_spawn_y":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":0,
+                 "y":56
+                }, 
+                {
+                 "height":8,
+                 "id":36,
+                 "name":"",
+                 "properties":
+                    {
+                     "target_room":2,
+                     "target_room_spawn_x":0,
+                     "target_room_spawn_y":0
+                    },
+                 "propertytypes":
+                    {
+                     "target_room":"int",
+                     "target_room_spawn_x":"int",
+                     "target_room_spawn_y":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":32,
+                 "x":48,
+                 "y":0
+                }, 
+                {
+                 "height":48,
+                 "id":38,
+                 "name":"",
+                 "properties":
+                    {
+                     "target_room":3,
+                     "target_room_spawn_x":0,
+                     "target_room_spawn_y":0
+                    },
+                 "propertytypes":
+                    {
+                     "target_room":"int",
+                     "target_room_spawn_x":"int",
+                     "target_room_spawn_y":"int"
+                    },
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":8,
+                 "x":120,
+                 "y":56
+                }],
+         "opacity":1,
+         "type":"objectgroup",
+         "visible":true,
+         "x":0,
+         "y":0
         }],
- "nextobjectid":35,
+ "nextobjectid":41,
  "orientation":"orthogonal",
  "properties":
     {
      "map_name":"rabbibis_den_room_1",
+     "spawn_x":56,
+     "spawn_y":65,
      "tileset_name":"rabbibisden_tiles_def",
      "tileset_palette":"rabbibisden_tiles_pal_def"
     },
  "propertytypes":
     {
      "map_name":"string",
+     "spawn_x":"int",
+     "spawn_y":"int",
      "tileset_name":"string",
      "tileset_palette":"string"
     },

@@ -50,5 +50,6 @@ void __character_animate(character_t *ptr);
 void __character_move(character_t *ptr, room_t *room);
 void __character_transform(character_t *ptr);
 u8 __character_collide(character_t *ptr, s16 dx, s16 dy, room_t *room);
+void __character_check_warp(character_t *ptr, s16 dx, s16 dy, room_t *room);
 
 #endif // _CHARACTER_H_

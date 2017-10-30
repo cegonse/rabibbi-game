@@ -14,13 +14,15 @@ var inMap = JSON.parse(fs.readFileSync(inName));
 var mapName = inMap.properties.map_name;
 var mapTileset = inMap.properties.tileset_name;
 var mapPalette = inMap.properties.tileset_palette;
+var spawnX = inMap.properties.spawn_x;
+var spawnY = inMap.properties.spawn_y;
 var outName = mapName + ".h";
 
 // Create the output C header
 var outFile = "// Created with tiled2c.js\n";
 outFile += "#ifndef _" + mapName + "_\n";
 outFile += "#define _" + mapName + "_\n\n";
-outFile += "#include \"../room.h\"\n\n";
+outFile += "#include \"../room_definition.h\"\n";
 
 // Write the data for the plane A layer
 var planTiles = null;
@@ -82,22 +84,109 @@ if (collisionEdges) {
 	outFile += "};\n\n";
 }
 
-// Write the room struct
-outFile += "static const room_t " + mapName + " = {\n";
+// Write the warp data
+var warpEdges = null;
+
+for (var i = 0; i < inMap.layers.length; ++i) {
+	if (inMap.layers[i].name == "Warp") {
+		warpEdges = inMap.layers[i].objects;
+		break;
+	}
+}
+
+if (warpEdges) {
+	outFile += "#define " + mapName + "_WARP_EDGE_COUNT\t" + warpEdges.length + "\n\n";
+	outFile += "static const s16 " + mapName + "_warp_data[" + (warpEdges.length * 4).toString() + "] = {\n";
+
+	for (var i = 0; i < warpEdges.length; ++i) {
+		var ed = warpEdges[i];
+
+		outFile += "\t" + Math.floor(ed.x).toString() + ", " + Math.floor(ed.y).toString() + ", " + 
+						  Math.floor(ed.width).toString() + ", " + Math.floor(ed.height).toString() + ",\n";
+	}
+
+	outFile += "};\n\n";
+}
+
+// Write the struct declaration
+outFile += "static const room_t " + mapName + " = {";
 outFile += "\t.tilesetData = &" + mapTileset + ",\n";
 outFile += "\t.paletteData = &" + mapPalette + ",\n";
+outFile += "\t.planeWidth = " + planData.width + ",\n";
+outFile += "\t.planeHeight = " + planData.height + ",\n";
+outFile += "\t.planeData = " + mapName + "_" + planData.name + ",\n";
+outFile += "\t.collisionBoxes = " + collisionEdges.length + ",\n";
+outFile += "\t.collisionData = " + mapName + "_collision_data" + ",\n";
+outFile += "\t.warpBoxes = " + warpEdges.length + ",\n";
+outFile += "\t.warpData = " + mapName + "_warp_data" + ",\n";
 
-if (planData) {
-	outFile += "\t.planeWidth = " + planData.width + ",\n";
-	outFile += "\t.planeHeight = " + planData.height + ",\n";
-	outFile += "\t.planeData = " + mapName + "_" + planData.name + ",\n";
+outFile += "\t.warpTargetRooms = {\n";
+if (warpEdges[0]) {
+	outFile += "\t\t" + warpEdges[0].properties.target_room + ",\n";
+} else {
+	outFile += "\t\t0,\n";
 }
-
-if (collisionEdges) {
-	outFile += "\t.collisionBoxes = " + collisionEdges.length + ",\n";
-	outFile += "\t.collisionData = " + mapName + "_collision_data" + "\n";
+if (warpEdges[1]) {
+	outFile += "\t\t" + warpEdges[1].properties.target_room + ",\n";
+} else {
+	outFile += "\t\t0,\n";
 }
+if (warpEdges[2]) {
+	outFile += "\t\t" + warpEdges[2].properties.target_room + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+if (warpEdges[3]) {
+	outFile += "\t\t" + warpEdges[3].properties.target_room + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+outFile += "\t},\n";
 
+outFile += "\t.warpTargetRoomsSpawn_x = {\n";
+if (warpEdges[0]) {
+	outFile += "\t\t" + warpEdges[0].properties.target_room_spawn_x + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+if (warpEdges[1]) {
+	outFile += "\t\t" + warpEdges[1].properties.target_room_spawn_x + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+if (warpEdges[2]) {
+	outFile += "\t\t" + warpEdges[2].properties.target_room_spawn_x + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+if (warpEdges[3]) {
+	outFile += "\t\t" + warpEdges[3].properties.target_room_spawn_x + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+outFile += "\t},\n";
+outFile += "\t.warpTargetRoomsSpawn_y = {\n";
+if (warpEdges[0]) {
+	outFile += "\t\t" + warpEdges[0].properties.target_room_spawn_y + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+if (warpEdges[1]) {
+	outFile += "\t\t" + warpEdges[1].properties.target_room_spawn_y + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+if (warpEdges[2]) {
+	outFile += "\t\t" + warpEdges[2].properties.target_room_spawn_y + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+if (warpEdges[3]) {
+	outFile += "\t\t" + warpEdges[3].properties.target_room_spawn_y + ",\n";
+} else {
+	outFile += "\t\t0,\n";
+}
+outFile += "\t},\n";
 outFile += "};\n\n";
 
 outFile += "#endif // _" + mapName + "_\n";

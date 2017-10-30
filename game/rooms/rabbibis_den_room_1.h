@@ -2,8 +2,7 @@
 #ifndef _rabbibis_den_room_1_
 #define _rabbibis_den_room_1_
 
-#include "../room.h"
-
+#include "../room_definition.h"
 #define rabbibis_den_room_1_PlaneA_HEIGHT	16
 #define rabbibis_den_room_1_PlaneA_WIDTH	16
 
@@ -44,14 +43,41 @@ static const s16 rabbibis_den_room_1_collision_data[52] = {
 	112, 112, 8, 16,
 };
 
-static const room_t rabbibis_den_room_1 = {
-	.tilesetData = &rabbibisden_tiles_def,
+#define rabbibis_den_room_1_WARP_EDGE_COUNT	3
+
+static const s16 rabbibis_den_room_1_warp_data[12] = {
+	0, 56, 8, 48,
+	48, 0, 32, 8,
+	120, 56, 8, 48,
+};
+
+static const room_t rabbibis_den_room_1 = {	.tilesetData = &rabbibisden_tiles_def,
 	.paletteData = &rabbibisden_tiles_pal_def,
 	.planeWidth = 16,
 	.planeHeight = 16,
 	.planeData = rabbibis_den_room_1_PlaneA,
 	.collisionBoxes = 13,
-	.collisionData = rabbibis_den_room_1_collision_data
+	.collisionData = rabbibis_den_room_1_collision_data,
+	.warpBoxes = 3,
+	.warpData = rabbibis_den_room_1_warp_data,
+	.warpTargetRooms = {
+		1,
+		2,
+		3,
+		0,
+	},
+	.warpTargetRoomsSpawn_x = {
+		340,
+		0,
+		0,
+		0,
+	},
+	.warpTargetRoomsSpawn_y = {
+		142,
+		0,
+		0,
+		0,
+	},
 };
 
 #endif // _rabbibis_den_room_1_

@@ -2,18 +2,18 @@
 #define _ROOM_H_
 
 #include <genesis.h>
+#include "gfx.h"
+#include "rooms/rabbibis_den_room_1.h"
+#include "rooms/rabbibis_den_room_2.h"
 
-typedef struct room
-{
-	const s8 planeWidth;
-	const s8 planeHeight;
-	const s8 collisionBoxes;
+//-------------------------------------------------------------
 
-	const u16 *planeData;
-	const s16 *collisionData;
-	const TileSet *tilesetData;
-	const Palette *paletteData;
-} room_t;
+static const room_t *ROOM_LIST[MAX_ROOMS] = {
+	&rabbibis_den_room_1,
+	&rabbibis_den_room_2
+};
+
+//-------------------------------------------------------------
 
 void room_load(const room_t *room);
 
