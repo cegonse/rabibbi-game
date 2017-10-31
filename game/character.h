@@ -11,10 +11,10 @@
 #define CHARACTER_ANIMATION_UP_IDLE			4
 #define CHARACTER_ANIMATION_UP_WALK			5
 
-#define CHARACTER_SCROLL_UP_LIMIT       30
-#define CHARACTER_SCROLL_DOWN_LIMIT     150
-#define CHARACTER_SCROLL_LEFT_LIMIT     30
-#define CHARACTER_SCROLL_RIGHT_LIMIT    250
+#define CHARACTER_SCROLL_UP_LIMIT       80
+#define CHARACTER_SCROLL_DOWN_LIMIT     80
+#define CHARACTER_SCROLL_LEFT_LIMIT     100
+#define CHARACTER_SCROLL_RIGHT_LIMIT    120
 
 #define CHARACTER_ANIMATION_WALK_FRAMES		8
 
@@ -25,6 +25,10 @@ typedef struct character
 {
 	s16 position_x;
 	s16 position_y;
+	s16 int_vel_x;
+	s16 int_vel_y;
+	s16 *room_transform_x;
+	s16 *room_transform_y;
 
 	fix16 vel_x;
 	fix16 vel_y;
@@ -38,7 +42,7 @@ typedef struct character
 	Sprite *sprite;
 } character_t;
 
-void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, const u16 *pal, u8 palIndex, fix16 maxSpeed, fix16 friction);
+void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, s16 *rtx, s16 *rty, const u16 *pal, u8 palIndex, fix16 maxSpeed, fix16 friction);
 
 void character_update(character_t *ptr, room_t *room);
 

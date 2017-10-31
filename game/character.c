@@ -5,10 +5,14 @@ extern fix16 *dt;
 
 //-------------------------------------------------------------
 
-void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, const u16 *pal, u8 palIndex, fix16 maxSpeed, fix16 friction)
+void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, s16 *rtx, s16 *rty, const u16 *pal, u8 palIndex, fix16 maxSpeed, fix16 friction)
 {
 	ptr->position_x = x;
 	ptr->position_y = y;
+	ptr->int_vel_x = 0;
+	ptr->int_vel_y = 0;
+	ptr->room_transform_x = rtx;
+	ptr->room_transform_y = rty;
 	ptr->max_speed = maxSpeed;
 	ptr->friction = friction;
 	ptr->vel_x = 0;
@@ -38,7 +42,6 @@ void character_update(character_t *ptr, room_t *room)
 inline void __character_move(character_t *ptr, room_t *room)
 {
 	fix16 ax = 0, ay = 0;
-	s16 vx, vy;
 
 	// X axis
 	if (ptr->accel_x != 0)
@@ -107,21 +110,21 @@ inline void __character_move(character_t *ptr, room_t *room)
 	}
 
 	// Handle speed
-	vx = fix16ToInt(ptr->vel_x);
-	vy = fix16ToInt(ptr->vel_y);
+	ptr->int_vel_x = fix16ToInt(ptr->vel_x);
+	ptr->int_vel_y = fix16ToInt(ptr->vel_y);
 
 	// Handle warp triggers
-	__character_check_warp(ptr, vx, vy, room);
+	__character_check_warp(ptr, ptr->int_vel_x, ptr->int_vel_y, room);
 
 	// Handle collisions
-    if (!__character_collide(ptr, vx, 0, room))
+    if (!__character_collide(ptr, ptr->int_vel_x, 0, room))
 	{
-		ptr->position_x += vx;
+		ptr->position_x += ptr->int_vel_x;
 	}
 
-	if (!__character_collide(ptr, 0, vy, room))
+	if (!__character_collide(ptr, 0, ptr->int_vel_y, room))
 	{
-		ptr->position_y += vy;
+		ptr->position_y += ptr->int_vel_y;
 	}
 }
 
@@ -270,7 +273,19 @@ inline void __character_animate(character_t *ptr)
 
 inline void __character_transform(character_t *ptr)
 {
-	SPR_setPosition(ptr->sprite, ptr->position_x, ptr->position_y);
+	if (ptr->position_x + *ptr->room_transform_x < CHARACTER_SCROLL_LEFT_LIMIT || ptr->position_x + *ptr->room_transform_x > VDP_getScreenWidth() - CHARACTER_SCROLL_RIGHT_LIMIT)
+	{
+		*ptr->room_transform_x -= ptr->int_vel_x;
+		VDP_setHorizontalScroll(PLAN_A, *ptr->room_transform_x);
+	}
+
+	if (ptr->position_y - *ptr->room_transform_y < CHARACTER_SCROLL_UP_LIMIT || ptr->position_y - *ptr->room_transform_y > VDP_getScreenHeight() - CHARACTER_SCROLL_DOWN_LIMIT)
+	{
+		*ptr->room_transform_y += ptr->int_vel_y;
+		VDP_setVerticalScroll(PLAN_A, *ptr->room_transform_y);
+	}
+
+	SPR_setPosition(ptr->sprite, ptr->position_x + *ptr->room_transform_x, ptr->position_y - *ptr->room_transform_y);
 }
 
 //-------------------------------------------------------------

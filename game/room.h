@@ -15,6 +15,6 @@ static const room_t *ROOM_LIST[MAX_ROOMS] = {
 
 //-------------------------------------------------------------
 
-void room_load(const room_t *room);
+void room_load(const room_t *room, s16 *room_transform_x, s16 *room_transform_y);
 
 #endif // _ROOM_H_

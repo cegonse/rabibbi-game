@@ -67,7 +67,7 @@ static const room_t rabbibis_den_room_1 = {	.tilesetData = &rabbibisden_tiles_de
 		0,
 	},
 	.warpTargetRoomsSpawn_x = {
-		340,
+		330,
 		0,
 		0,
 		0,

@@ -61,7 +61,7 @@ release: LIBMD= $(LIB)/libmd.a
 release: pre-build out/rom.bin
 
 debug: FLAGS= $(DEFAULT_FLAGS) -O1 -ggdb -DDEBUG=1
-debug: LIBMD= $(LIB)/libmd_debug.a
+debug: LIBMD= $(LIB)/libmd.a
 debug: pre-build out/rom.bin out/rom.out out/symbol.txt
 
 
