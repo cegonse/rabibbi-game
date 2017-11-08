@@ -1,9 +1,5 @@
 #include "init.h"
 
-static const fix16 NTSC_DELTA_TIME = FIX16(0.17);
-static const fix16 PAL_DELTA_TIME = FIX16(0.02);
-static fix16 DELTA_TIME;
-fix16 *dt;
 
 //-------------------------------------------------------------
 
@@ -27,18 +23,14 @@ void system_init()
 		// Set the appropriate delta time
 		if (IS_PALSYSTEM)
 		{
-			DELTA_TIME = PAL_DELTA_TIME;
 			VDP_setScreenWidth320();
 			VDP_setScreenHeight240();
 		}
 		else
 		{
-			DELTA_TIME = NTSC_DELTA_TIME;
 			VDP_setScreenWidth320();
 			VDP_setScreenHeight224();
 		}
-
-		dt = &DELTA_TIME;
 	)
 }
 

@@ -3,6 +3,7 @@
 
 #include <genesis.h>
 #include "gfx.h"
+#include "game_state.h"
 #include "rooms/rabbibis_den_room_1.h"
 #include "rooms/rabbibis_den_room_2.h"
 
