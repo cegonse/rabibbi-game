@@ -46,6 +46,7 @@ int main()
 			// Check pause button
 			if (firstPadState & BUTTON_START || secondPadState & BUTTON_START)
 			{
+				guiState.menu_state = GUI_MENU_SHOWING;
 				gameState = GAME_STATE_PAUSING;
 			}
 
@@ -62,9 +63,29 @@ int main()
 		}
 		else if (gameState == GAME_STATE_PAUSING)
 		{
-			
+			if (guiState.menu_state == GUI_MENU_VISIBLE)
+			{
+				gameState = GAME_STATE_PAUSED;
+			}
+		}
+		else if (gameState == GAME_STATE_UNPAUSING)
+		{
+			if (guiState.menu_state == GUI_MENU_HIDDEN)
+			{
+				gameState = GAME_STATE_PLAYING;
+			}
+		}
+		else if (gameState == GAME_STATE_PAUSED)
+		{
+			// Check pause button
+			if (firstPadState & BUTTON_START || secondPadState & BUTTON_START)
+			{
+				guiState.menu_state = GUI_MENU_HIDING;
+				gameState = GAME_STATE_UNPAUSING;
+			}
 		}
 
+		gui_update(&guiState);
 		system_endFrame();
 	}
 

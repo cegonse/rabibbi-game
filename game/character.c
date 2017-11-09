@@ -21,7 +21,7 @@ void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y,
 	ptr->frame_count = 0;
 
 	VDP_setPalette(PAL0 + palIndex, pal);
-	ptr->sprite = SPR_addSprite(spr, x, y, TILE_ATTR(PAL0 + palIndex, TRUE, FALSE, FALSE));
+	ptr->sprite = SPR_addSprite(spr, x, y, TILE_ATTR(PAL0 + palIndex, FALSE, FALSE, FALSE));
 	ptr->animation = CHARACTER_ANIMATION_DOWN_IDLE;
 	SPR_setAnim(ptr->sprite, ptr->animation);
 	SPR_update();
