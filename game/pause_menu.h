@@ -2,6 +2,7 @@
 #ifndef _pause_menu_
 #define _pause_menu_
 
+#include "../room_definition.h"
 #define pause_menu_PlaneA_HEIGHT	28
 #define pause_menu_PlaneA_WIDTH	40
 
@@ -76,6 +77,20 @@ static const u16 pause_menu_PlaneA[1120] = {
 	8, 8, 8, 8, 8, 8, 9, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
 	0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+};
+
+static const room_t pause_menu = {	.tilesetData = &pause_menu_tiles_def,
+	.paletteData = &pause_menu_tiles_def,
+	.planeWidth = 40,
+	.planeHeight = 28,
+	.planeData = pause_menu_PlaneA,
+	.collisionBoxes = 0,
+	.collisionData = NULL,
+	.warpBoxes = 0,
+	.warpData = NULL,
+	.warpTargetRooms = NULL,
+	.warpTargetRoomsSpawn_x = NULL,
+	.warpTargetRoomsSpawn_y = NULL
 };
 
 #endif // _pause_menu_
