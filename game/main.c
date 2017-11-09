@@ -7,6 +7,7 @@
 #include "gui_controller.h"
 
 static u8 twoPlayers = FALSE;
+static u8 controllerState = CONTROLLER_STATE_NONE;
 static u8 gameState = GAME_STATE_INIT;
 static character_t playerOneCharacter;
 static character_t playerTwoCharacter;
@@ -16,7 +17,7 @@ static s16 roomTransform_x = 0, roomTransform_y = 0;
 
 int main()
 {
-	system_init();
+	system_init(&controllerState);
 
 	// Load the first room
 	currentRoom = &rabbibis_den_room_1;
@@ -37,18 +38,31 @@ int main()
 
 	while (1)
 	{
+		firstPadState = JOY_readJoypad(JOY_1);
+		if (twoPlayers) secondPadState = JOY_readJoypad(JOY_2);
+
 		if (gameState == GAME_STATE_PLAYING)
 		{
+			// Check pause button
+			if (firstPadState & BUTTON_START || secondPadState & BUTTON_START)
+			{
+				gameState = GAME_STATE_PAUSING;
+			}
+
 			// Update player one
-			firstPadState = JOY_readJoypad(JOY_1);
 			character_joyToAxis(firstPadState, &(playerOneCharacter.accel_x), &(playerOneCharacter.accel_y));
 			character_update(&playerOneCharacter, currentRoom);
 
 			// Update player two
 			if (twoPlayers)
 			{
-				secondPadState = JOY_readJoypad(JOY_2);
+				character_joyToAxis(secondPadState, &(playerTwoCharacter.accel_x), &(playerTwoCharacter.accel_y));
+				character_update(&playerTwoCharacter, currentRoom);
 			}
+		}
+		else if (gameState == GAME_STATE_PAUSING)
+		{
+			
 		}
 
 		system_endFrame();
@@ -63,12 +77,12 @@ void game_change_room_event(room_t *room, s16 spawn_x, s16 spawn_y)
 {
 	gameState = GAME_STATE_CHANGING_ROOM;
 
-	// Fade characters out
-	VDP_fadePalOut(PAL0 + CHARACTER_PALETTE_INDEX, 3, FALSE);
-
 	// Fade room out
 	VDP_setPalette(PAL0 + ROOM_PALETTE_INDEX, currentRoom->paletteData->data);
 	VDP_fadePalOut(PAL0 + ROOM_PALETTE_INDEX, 3, FALSE);
+
+	// Fade characters out
+	VDP_fadePalOut(PAL0 + CHARACTER_PALETTE_INDEX, 3, FALSE);
 
 	currentRoom = room;
 	room_load(currentRoom, &roomTransform_x, &roomTransform_y);
@@ -109,11 +123,11 @@ void game_change_room_event(room_t *room, s16 spawn_x, s16 spawn_y)
 
 	SPR_update();
 
-	// Fade room in
-	VDP_fadePalIn(PAL0 + ROOM_PALETTE_INDEX, room->paletteData->data, 3, FALSE);
-
 	// Fade characters in
 	VDP_fadePalIn(PAL0 + CHARACTER_PALETTE_INDEX, character_def.palette->data, 3, FALSE);
+
+	// Fade room in
+	VDP_fadePalIn(PAL0 + ROOM_PALETTE_INDEX, room->paletteData->data, 3, FALSE);
 
 	gameState = GAME_STATE_PLAYING;
 }

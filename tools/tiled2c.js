@@ -115,78 +115,107 @@ outFile += "\t.paletteData = &" + mapPalette + ",\n";
 outFile += "\t.planeWidth = " + planData.width + ",\n";
 outFile += "\t.planeHeight = " + planData.height + ",\n";
 outFile += "\t.planeData = " + mapName + "_" + planData.name + ",\n";
-outFile += "\t.collisionBoxes = " + collisionEdges.length + ",\n";
-outFile += "\t.collisionData = " + mapName + "_collision_data" + ",\n";
-outFile += "\t.warpBoxes = " + warpEdges.length + ",\n";
-outFile += "\t.warpData = " + mapName + "_warp_data" + ",\n";
 
-outFile += "\t.warpTargetRooms = {\n";
-if (warpEdges[0]) {
-	outFile += "\t\t" + warpEdges[0].properties.target_room + ",\n";
+if (collisionEdges) {
+	outFile += "\t.collisionBoxes = " + collisionEdges.length + ",\n";
+	outFile += "\t.collisionData = " + mapName + "_collision_data" + ",\n";
 } else {
-	outFile += "\t\t0,\n";
+	outFile += "\t.collisionBoxes = 0,\n";
+	outFile += "\t.collisionData = NULL,\n";
 }
-if (warpEdges[1]) {
-	outFile += "\t\t" + warpEdges[1].properties.target_room + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-if (warpEdges[2]) {
-	outFile += "\t\t" + warpEdges[2].properties.target_room + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-if (warpEdges[3]) {
-	outFile += "\t\t" + warpEdges[3].properties.target_room + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-outFile += "\t},\n";
 
-outFile += "\t.warpTargetRoomsSpawn_x = {\n";
-if (warpEdges[0]) {
-	outFile += "\t\t" + warpEdges[0].properties.target_room_spawn_x + ",\n";
+if (warpEdges) {
+	outFile += "\t.warpBoxes = " + warpEdges.length + ",\n";
+	outFile += "\t.warpData = " + mapName + "_warp_data" + ",\n";
+	outFile += "\t.warpTargetRooms = {\n";
+
+	if (warpEdges[0]) {
+		outFile += "\t\t" + warpEdges[0].properties.target_room + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[1]) {
+		outFile += "\t\t" + warpEdges[1].properties.target_room + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[2]) {
+		outFile += "\t\t" + warpEdges[2].properties.target_room + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[3]) {
+		outFile += "\t\t" + warpEdges[3].properties.target_room + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	outFile += "\t},\n";
+	outFile += "\t.warpTargetRoomsSpawn_x = {\n";
+
+	if (warpEdges[0]) {
+		outFile += "\t\t" + warpEdges[0].properties.target_room_spawn_x + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[1]) {
+		outFile += "\t\t" + warpEdges[1].properties.target_room_spawn_x + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[2]) {
+		outFile += "\t\t" + warpEdges[2].properties.target_room_spawn_x + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[3]) {
+		outFile += "\t\t" + warpEdges[3].properties.target_room_spawn_x + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	outFile += "\t},\n";
+	outFile += "\t.warpTargetRoomsSpawn_y = {\n";
+
+	if (warpEdges[0]) {
+		outFile += "\t\t" + warpEdges[0].properties.target_room_spawn_y + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[1]) {
+		outFile += "\t\t" + warpEdges[1].properties.target_room_spawn_y + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[2]) {
+		outFile += "\t\t" + warpEdges[2].properties.target_room_spawn_y + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+
+	if (warpEdges[3]) {
+		outFile += "\t\t" + warpEdges[3].properties.target_room_spawn_y + ",\n";
+	} else {
+		outFile += "\t\t0,\n";
+	}
+	
+	outFile += "\t},\n";
 } else {
-	outFile += "\t\t0,\n";
+	outFile += "\t.warpBoxes = 0,\n";
+	outFile += "\t.warpData = NULL,\n";
+	outFile += "\t.warpTargetRooms = NULL,\n";
+	outFile += "\t.warpTargetRoomsSpawn_x = NULL,\n";
+	outFile += "\t.warpTargetRoomsSpawn_y = NULL\n";
 }
-if (warpEdges[1]) {
-	outFile += "\t\t" + warpEdges[1].properties.target_room_spawn_x + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-if (warpEdges[2]) {
-	outFile += "\t\t" + warpEdges[2].properties.target_room_spawn_x + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-if (warpEdges[3]) {
-	outFile += "\t\t" + warpEdges[3].properties.target_room_spawn_x + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-outFile += "\t},\n";
-outFile += "\t.warpTargetRoomsSpawn_y = {\n";
-if (warpEdges[0]) {
-	outFile += "\t\t" + warpEdges[0].properties.target_room_spawn_y + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-if (warpEdges[1]) {
-	outFile += "\t\t" + warpEdges[1].properties.target_room_spawn_y + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-if (warpEdges[2]) {
-	outFile += "\t\t" + warpEdges[2].properties.target_room_spawn_y + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-if (warpEdges[3]) {
-	outFile += "\t\t" + warpEdges[3].properties.target_room_spawn_y + ",\n";
-} else {
-	outFile += "\t\t0,\n";
-}
-outFile += "\t},\n";
+
 outFile += "};\n\n";
 
 outFile += "#endif // _" + mapName + "_\n";

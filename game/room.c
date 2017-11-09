@@ -22,22 +22,26 @@ void room_load(const room_t *room, s16 *room_transform_x, s16 *room_transform_y)
 
 	// Load the tilemap data
 	u8 x = room->planeWidth-1, y = room->planeHeight-1;
-	do
-	{
-		VDP_setTileMapXY(PLAN_A,
-				TILE_ATTR_FULL(PAL0 + ROOM_PALETTE_INDEX,FALSE,FALSE,FALSE,TILE_USERINDEX + room->planeData[x+room->planeWidth*y]-1),
-				x, y);
 
-		if (x != 0) {
-			--x;
-		} else {
-			if (y != 0) {
-				x = room->planeWidth-1;
-				--y;
+	SYSTEM_GPU_SAFE
+	(
+		do
+		{
+			VDP_setTileMapXY(PLAN_A,
+					TILE_ATTR_FULL(PAL0 + ROOM_PALETTE_INDEX,FALSE,FALSE,FALSE,TILE_USERINDEX + room->planeData[x+room->planeWidth*y]-1),
+					x, y);
+
+			if (x != 0) {
+				--x;
 			} else {
-				break;
+				if (y != 0) {
+					x = room->planeWidth-1;
+					--y;
+				} else {
+					break;
+				}
 			}
-		}
-	} while (x + y != 0);
+		} while (x + y != 0);
+	)
 }
 

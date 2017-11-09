@@ -3,8 +3,10 @@
 
 //-------------------------------------------------------------
 
-void system_init()
+void system_init(u8 *controller)
 {
+	u8 joyState1, joyState2;
+
 	SYSTEM_GPU_SAFE
 	(
 		// Init the sprite engine with the default VRAM
@@ -30,6 +32,28 @@ void system_init()
 		{
 			VDP_setScreenWidth320();
 			VDP_setScreenHeight224();
+		}
+
+		// Detect connected controllers
+		joyState1 = JOY_getJoypadType(PORT_1);
+		joyState2 = JOY_getJoypadType(PORT_2);
+
+		if (joyState1 == JOY_TYPE_PAD3)
+		{
+			*controller |= CONTROLLER_STATE_ONE_3BTN;
+		}
+		else if (joyState1 == JOY_TYPE_PAD6)
+		{
+			*controller |= CONTROLLER_STATE_ONE_6BTN;
+		}
+
+		if (joyState2 == JOY_TYPE_PAD3)
+		{
+			*controller |= CONTROLLER_STATE_TWO_3BTN;
+		}
+		else if (joyState2 == JOY_TYPE_PAD6)
+		{
+			*controller |= CONTROLLER_STATE_TWO_6BTN;
 		}
 	)
 }
