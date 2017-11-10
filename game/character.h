@@ -23,6 +23,9 @@
 #define CHARACTER_SPRITE_WIDTH			24
 #define CHARACTER_SPRITE_HEIGHT			24
 
+#define CHARACTER_SHADOW_OFFSET_X		4
+#define CHARACTER_SHADOW_OFFSET_Y		18
+
 static const fix16 character_speed_table_x[0xB] =
 {
 	FIX16(0.0), // 0x00
@@ -73,12 +76,12 @@ typedef struct character
 	u8 frame;
 	u8 frame_count;
 	Sprite *sprite;
+	Sprite *shadow;
+	Sprite *punch;
 } character_t;
 
 void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y, s16 *rtx, s16 *rty, const u16 *pal, u8 palIndex, fix16 maxSpeed, fix16 friction);
-
 void character_update(character_t *ptr, room_t *room);
-
 void character_joyToAxis(u16 joy, fix16 *vx, fix16 *vy);
 
 // Private members

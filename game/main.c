@@ -135,11 +135,13 @@ void game_change_room_event(room_t *room, s16 spawn_x, s16 spawn_y)
 	VDP_setVerticalScroll(PLAN_A, roomTransform_y);
 
 	// Update characters
-	SPR_setPosition(playerOneCharacter.sprite, playerOneCharacter.position_x + roomTransform_x, playerOneCharacter.position_y - roomTransform_y);
+	__character_transform(&playerOneCharacter);
 
 	if (twoPlayers)
 	{
-		SPR_setPosition(playerTwoCharacter.sprite, playerTwoCharacter.position_x + roomTransform_x, playerTwoCharacter.position_y - roomTransform_y);
+		playerTwoCharacter.position_x = spawn_x + 4;
+		playerTwoCharacter.position_y = spawn_y + 4;
+		__character_transform(&playerOneCharacter);
 	}
 
 	SPR_update();

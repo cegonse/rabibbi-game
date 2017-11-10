@@ -19,7 +19,6 @@ extern const SpriteDefinition gui_hud_number_6_def;
 extern const SpriteDefinition gui_hud_number_7_def;
 extern const SpriteDefinition gui_hud_number_8_def;
 extern const SpriteDefinition gui_hud_number_9_def;
-extern const Palette pause_menu_pal_def;
 extern const TileSet pause_menu_tiles_def;
 
 #endif // __GUI_H_

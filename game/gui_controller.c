@@ -6,7 +6,7 @@
 void gui_init(gui_state_t *state, u8 chrPalIndex)
 {
 	state->menu_state = GUI_MENU_HIDDEN;
-	state->menu_position_y = 245;
+	state->menu_frame = GUI_MENU_ANIMATION_CURVE_OPEN_POINTS - 1;
 
 	state->player_one_bar[0] = SPR_addSprite(&gui_hud_lifebar_begin_filled_def, 
 		GUI_HP_PLAY_ONE_X + GUI_HP_BAR_SPACING, GUI_HP_PLAY_ONE_Y, TILE_ATTR(PAL0 + chrPalIndex, FALSE, FALSE, FALSE));
@@ -61,7 +61,6 @@ void gui_init(gui_state_t *state, u8 chrPalIndex)
 	SYSTEM_GPU_SAFE
 	(
 		VDP_loadTileSet(&pause_menu_tiles_def, TILE_USERINDEX + 256, TRUE);
-		VDP_setPalette(PAL0 + 3, pause_menu_pal_def.data);
 		VDP_setHorizontalScroll(PLAN_B, 0);
 		VDP_setVerticalScroll(PLAN_B, 245);
 	
@@ -70,7 +69,7 @@ void gui_init(gui_state_t *state, u8 chrPalIndex)
 			if (pause_menu_PlaneA[x+pause_menu_PlaneA_WIDTH*y] != 0)
 			{
 				VDP_setTileMapXY(PLAN_B,
-					TILE_ATTR_FULL(PAL0 + 3,TRUE,FALSE,FALSE,TILE_USERINDEX + pause_menu_PlaneA[x+pause_menu_PlaneA_WIDTH*y] + 256 -1),
+					TILE_ATTR_FULL(PAL0 + CHARACTER_PALETTE_INDEX,TRUE,FALSE,FALSE,TILE_USERINDEX + pause_menu_PlaneA[x+pause_menu_PlaneA_WIDTH*y] + 256 -1),
 					x, y);
 			}
 
@@ -95,26 +94,23 @@ void gui_update(gui_state_t *state)
 	// Handle menu
 	if (state->menu_state == GUI_MENU_SHOWING)
 	{
-		state->menu_position_y -= 10;
-		VDP_setVerticalScroll(PLAN_B, state->menu_position_y);
+		VDP_setVerticalScroll(PLAN_B, gui_menu_animation_open_curve[state->menu_frame--]);
 
-		if (state->menu_position_y <= 10)
+		if (state->menu_frame == 0)
 		{
-			state->menu_position_y = 0;
 			VDP_setVerticalScroll(PLAN_B, 0);
 			state->menu_state = GUI_MENU_VISIBLE;
 		}
 	}
 	else if (state->menu_state == GUI_MENU_HIDING)
 	{
-		state->menu_position_y += 10;
-		VDP_setVerticalScroll(PLAN_B, state->menu_position_y);
+		VDP_setVerticalScroll(PLAN_B, gui_menu_animation_close_curve[state->menu_frame++]);
 
-		if (state->menu_position_y >= 230)
+		if (state->menu_frame == GUI_MENU_ANIMATION_CURVE_CLOSE_POINTS - 1)
 		{
-			state->menu_position_y = 245;
 			VDP_setVerticalScroll(PLAN_B, 245);
 			state->menu_state = GUI_MENU_HIDDEN;
+			state->menu_frame = GUI_MENU_ANIMATION_CURVE_OPEN_POINTS - 1;
 		}
 	}
 }

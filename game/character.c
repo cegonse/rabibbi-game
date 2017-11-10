@@ -22,6 +22,8 @@ void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y,
 
 	VDP_setPalette(PAL0 + palIndex, pal);
 	ptr->sprite = SPR_addSprite(spr, x, y, TILE_ATTR(PAL0 + palIndex, FALSE, FALSE, FALSE));
+	ptr->shadow = SPR_addSprite(&character_shadow_def, x + CHARACTER_SHADOW_OFFSET_X, y + CHARACTER_SHADOW_OFFSET_Y,
+		TILE_ATTR(PAL0 + palIndex, FALSE, FALSE, FALSE));
 	ptr->animation = CHARACTER_ANIMATION_DOWN_IDLE;
 	SPR_setAnim(ptr->sprite, ptr->animation);
 	SPR_update();
@@ -281,6 +283,8 @@ inline void __character_transform(character_t *ptr)
 	}
 
 	SPR_setPosition(ptr->sprite, ptr->position_x + *ptr->room_transform_x, ptr->position_y - *ptr->room_transform_y);
+	SPR_setPosition(ptr->shadow, CHARACTER_SHADOW_OFFSET_X + ptr->position_x + *ptr->room_transform_x, 
+								 CHARACTER_SHADOW_OFFSET_Y + ptr->position_y - *ptr->room_transform_y);
 }
 
 //-------------------------------------------------------------

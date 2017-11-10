@@ -2,8 +2,8 @@
 #define __GFX_H_
 
 extern const SpriteDefinition character_def;
-extern const Palette tiles_pal_def;
-extern const TileSet basic_tiles_def;
+extern const SpriteDefinition character_shadow_def;
+extern const SpriteDefinition character_punch_def;
 extern const Palette rabbibisden_tiles_pal_def;
 extern const TileSet rabbibisden_tiles_def;
 

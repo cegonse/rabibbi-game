@@ -18,5 +18,4 @@ SPRITE gui_hud_number_7_def "./gfx/gui/number_7.png" 1 1 NONE 0
 SPRITE gui_hud_number_8_def "./gfx/gui/number_8.png" 1 1 NONE 0
 SPRITE gui_hud_number_9_def "./gfx/gui/number_9.png" 1 1 NONE 0
 
-PALETTE pause_menu_pal_def "./gfx/gui/menu_dialog_9slice.png"
 TILESET pause_menu_tiles_def "./gfx/gui/menu_dialog_9slice.png" NONE
