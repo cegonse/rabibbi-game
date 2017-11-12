@@ -30,15 +30,13 @@
 #define GUI_MENU_HIDING			2
 #define GUI_MENU_HIDDEN			3
 
-#define GUI_MENU_ANIMATION_CURVE_OPEN_POINTS		50
+#define GUI_MENU_ANIMATION_CURVE_OPEN_POINTS		30
 #define GUI_MENU_ANIMATION_CURVE_CLOSE_POINTS		25
 
-static const u8 gui_menu_animation_open_curve[GUI_MENU_ANIMATION_CURVE_OPEN_POINTS] = {
-	0, 4, 6, 6, 3, 1, 9, 16, 20, 22, 
-	21, 17, 11, 3, 10, 24, 37, 47, 56, 63, 
-	68, 72, 73, 73, 70, 66, 60, 52, 43, 31, 
-	18, 2, 21, 47, 71, 93, 114, 133, 151, 167, 
-	182, 195, 207, 217, 225, 232, 238, 241, 244, 245
+static const u8 gui_menu_animation_open_curve[30] = {
+	0, 3, 2, 2, 10, 14, 14, 10, 1, 16, 34,
+	46, 55, 60, 60, 57, 49, 37, 22, 2, 39,
+	78, 113, 144, 170, 193, 212, 226, 236, 242
 };
 
 static const u8 gui_menu_animation_close_curve[GUI_MENU_ANIMATION_CURVE_CLOSE_POINTS] = {

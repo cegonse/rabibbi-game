@@ -24,6 +24,12 @@ void character_init(character_t *ptr, const SpriteDefinition *spr, s16 x, s16 y,
 	ptr->sprite = SPR_addSprite(spr, x, y, TILE_ATTR(PAL0 + palIndex, FALSE, FALSE, FALSE));
 	ptr->shadow = SPR_addSprite(&character_shadow_def, x + CHARACTER_SHADOW_OFFSET_X, y + CHARACTER_SHADOW_OFFSET_Y,
 		TILE_ATTR(PAL0 + palIndex, FALSE, FALSE, FALSE));
+	
+	ptr->punch = SPR_addSprite(&character_punch_def, x, y, TILE_ATTR(PAL0 + palIndex, FALSE, FALSE, FALSE));
+	SPR_setVisibility(ptr->punch, HIDDEN);
+	ptr->punch_state = CHARACTER_PUNCH_STATE_IDLE;
+	ptr->punch_frame = 0;
+
 	ptr->animation = CHARACTER_ANIMATION_DOWN_IDLE;
 	SPR_setAnim(ptr->sprite, ptr->animation);
 	SPR_update();
@@ -36,6 +42,28 @@ void character_update(character_t *ptr, room_t *room)
 	__character_move(ptr, room);
 	__character_animate(ptr);
 	__character_transform(ptr);
+}
+
+//-------------------------------------------------------------
+
+void character_onPunch(character_t *ptr)
+{
+	if (ptr->punch_state == CHARACTER_PUNCH_STATE_IDLE)
+	{
+		if (ptr->animation == CHARACTER_ANIMATION_DOWN_IDLE)
+		{
+			ptr->animation = CHARACTER_ANIMATION_DOWN_PUNCH;
+			SPR_setAnim(ptr->punch, CHARACTER_PUNCH_ANIMATION_DOWN);
+		}
+
+		SPR_setFrame(ptr->punch, 0);
+		SPR_setVisibility(ptr->punch, VISIBLE);
+		SPR_setAnim(ptr->sprite, ptr->animation);
+
+		ptr->punch_state = CHARACTER_PUNCH_STATE_PUNCHING;
+		ptr->frame_count = 0;
+		ptr->frame = 0;
+	}
 }
 
 //-------------------------------------------------------------
@@ -264,6 +292,30 @@ inline void __character_animate(character_t *ptr)
 			}
 		}
 	}
+	else if (ptr->animation == CHARACTER_ANIMATION_DOWN_PUNCH)
+	{
+		ptr->frame_count++;
+
+		if (ptr->frame_count == CHARACTER_ANIMATION_PUNCH_FRAMES_PER_TRANSITION)
+		{
+			SPR_setFrame(ptr->sprite, ptr->frame);
+			SPR_setFrame(ptr->punch, min(ptr->frame, 2));
+
+			ptr->frame++;
+			ptr->frame_count = 0;
+
+			if (ptr->frame == CHARACTER_ANIMATION_PUNCH_FRAMES)
+			{
+				SPR_setVisibility(ptr->punch, HIDDEN);
+
+				ptr->frame = 0;
+				ptr->punch_state = CHARACTER_PUNCH_STATE_IDLE;
+				ptr->animation = CHARACTER_ANIMATION_DOWN_IDLE;
+
+				SPR_setAnim(ptr->sprite, ptr->animation);
+			}
+		}
+	}
 }
 
 //-------------------------------------------------------------
@@ -285,6 +337,12 @@ inline void __character_transform(character_t *ptr)
 	SPR_setPosition(ptr->sprite, ptr->position_x + *ptr->room_transform_x, ptr->position_y - *ptr->room_transform_y);
 	SPR_setPosition(ptr->shadow, CHARACTER_SHADOW_OFFSET_X + ptr->position_x + *ptr->room_transform_x, 
 								 CHARACTER_SHADOW_OFFSET_Y + ptr->position_y - *ptr->room_transform_y);
+	
+	if (ptr->animation == CHARACTER_ANIMATION_DOWN_PUNCH)
+	{
+		SPR_setPosition(ptr->punch, CHARACTER_PUNCH_DOWN_OFFSET_X + ptr->position_x + *ptr->room_transform_x, 
+									CHARACTER_PUNCH_DOWN_OFFSET_Y + ptr->position_y - *ptr->room_transform_y);
+	}
 }
 
 //-------------------------------------------------------------

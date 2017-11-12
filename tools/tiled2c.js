@@ -1,4 +1,5 @@
 // Node.JS tool to convert JSON Tiled maps to C headers
+// (c) Cesar Gonzalez Segura 2017
 var fs = require("fs");
 
 if (process.argv.length != 3) {

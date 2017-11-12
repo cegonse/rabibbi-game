@@ -50,6 +50,12 @@ int main()
 				gameState = GAME_STATE_PAUSING;
 			}
 
+			// Check action button
+			if (firstPadState & BUTTON_A && !(firstPadState & 0x0F))
+			{
+				character_onPunch(&playerOneCharacter);
+			}
+
 			// Update player one
 			character_joyToAxis(firstPadState, &(playerOneCharacter.accel_x), &(playerOneCharacter.accel_y));
 			character_update(&playerOneCharacter, currentRoom);
